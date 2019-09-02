@@ -7,11 +7,21 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.TreeSet;
 
+/**
+ * Program to read a collection of Fidelity trades exported from ActiveTraderPro as CSV files.
+ * Uses a "base" directory structure to hold the input files. The directory referenced
+ * by -Dom.ga.fidelity.trades.home is assumed to hold an input folder named, "input" containing CSV
+ * files named with the date of the day the trades were executed.
+ *
+ * The system uses the fidelity.properties file, also located in the base dire, to contain the ticker
+ * symbol which will be used to generate the output file name CSV file.
+ */
 public class Main {
     private static final Logger log = LoggerFactory.getLogger("fidelity.trades.Main");
-    private static final String OUT_HEADER = "Date" +
+    private String OUT_HEADER = "Date" +
             ",Avg Price" +
             ",Volume" +
             ",Buy Vol" +
@@ -27,25 +37,8 @@ public class Main {
             ",Buy Dollar Vol Pct" +
             ",Sell Dollar Vol Pct" +
             ",??? Dollar Vol Pct";
-/*
-        buf.append(dateStr).append(",")
-                .append(getAveragePrice()).append(",")
-                .append(getVolume()).append(",")
-                .append(getBuyVolume()).append(",")
-                .append(getSellVolume()).append(",")
-                .append(getUnknownVolume()).append(",")
-                .append(getDollarVolume()).append(",")
-                .append(getBuyDollarVolume()).append(",")
-                .append(getSellDollarVolume()).append(",")
-                .append(getUnknownDollarVolume()).append(",")
-                .append(getPctBuyVol()).append(",")
-                .append(getPctSellVol()).append(",")
-                .append(getPctUnknownVol()).append(",")
-                .append(getPctBuyDolVol()).append(",")
-                .append(getPctSellDolVol()).append(",")
-                .append(getPctUnknownDolVol()).append(",");
 
- */
+    private List<Bucket> bucketList;
 
     public Main() {
 
@@ -57,20 +50,28 @@ public class Main {
         app.processDirectory();
     }
 
+    /**
+     * Processes all files with ex
+     */
     private void processDirectory() {
         String[] csvExt = {"csv"};
         String outStr = GA_FidelityTradesConfig.getInstance().getHomeDir();
         String fileSep = System.getProperty("file.separator");
         String ticker = GA_FidelityTradesConfig.getInstance().getTicker();
+        bucketList = GA_FidelityTradesConfig.getInstance().getBuckets();
         File outfile;
         String inDirStr;
         Collection<File> inputList;
         TreeSet<File> sortedInputList;
 
+
         outfile = new File(outStr+fileSep+ticker+".csv");
         log.info("Output file, {}", outfile.getAbsolutePath());
 
         try {
+            // Fix header for variable number of price buckets
+            this.appendBucketNamesToHeader();
+
             PrintWriter pw = new PrintWriter(new FileWriter(outfile));
             pw.println(OUT_HEADER);
 
@@ -84,7 +85,7 @@ public class Main {
                 if(log.isInfoEnabled()) {
                     log.info("processing: {}",aFile.getName());
                 }
-                TradeDay aDay = new TradeDay(aFile);
+                TradeDay aDay = new TradeDay(aFile, bucketList);
                 aDay.process();
                 log.debug("{}",aDay);
                 try {
@@ -102,4 +103,9 @@ public class Main {
         }
     }
 
+    private void appendBucketNamesToHeader() {
+        bucketList.forEach(aBucket -> {
+            OUT_HEADER = OUT_HEADER + "," + aBucket.getName();
+        });
+    }
 }

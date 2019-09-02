@@ -38,7 +38,16 @@ public class Bucket {
         return this.compLogic;
     }
 
-    public boolean isIncluded(BigDecimal pPrice) {
+    /**
+     * Examines the trade to see if it belongs in this bucket.
+     * @param tradeRecord
+     * @return true if this bucket accepted the trade record.
+     */
+    public boolean acceptsTrade(TradeRecord tradeRecord) {
+        return belongsInThisBucket(tradeRecord.getPrice());
+    }
+
+    private boolean belongsInThisBucket (BigDecimal pPrice) {
         boolean rVal = false;
         if(this.compLogic == COMPARISON_LOGIC.INCLUSIVE) {
             rVal = testInclusive(pPrice);
@@ -53,12 +62,12 @@ public class Bucket {
         return rVal;
     }
 
-    public boolean testInclusive(BigDecimal pPrice) {
+    private boolean testInclusive(BigDecimal pPrice) {
         return pPrice.compareTo(this.min) >= 0
                 && pPrice.compareTo(this.max) <= 0;
     }
 
-    public boolean testExclusive(BigDecimal pPrice) {
+    private boolean testExclusive(BigDecimal pPrice) {
         return pPrice.compareTo(this.min) > 0
                 && pPrice.compareTo(this.max) < 0;
     }
