@@ -38,7 +38,7 @@ public class Main {
             ",Sell Dollar Vol Pct" +
             ",??? Dollar Vol Pct";
 
-    private List<Bucket> bucketList;
+    private List<TradePriceBucket> tradePriceBucketList;
 
     public Main() {
 
@@ -58,7 +58,7 @@ public class Main {
         String outStr = GA_FidelityTradesConfig.getInstance().getHomeDir();
         String fileSep = System.getProperty("file.separator");
         String ticker = GA_FidelityTradesConfig.getInstance().getTicker();
-        bucketList = GA_FidelityTradesConfig.getInstance().getBuckets();
+        tradePriceBucketList = GA_FidelityTradesConfig.getInstance().getBuckets();
         File outfile;
         String inDirStr;
         Collection<File> inputList;
@@ -85,7 +85,7 @@ public class Main {
                 if(log.isInfoEnabled()) {
                     log.info("processing: {}",aFile.getName());
                 }
-                TradeDay aDay = new TradeDay(aFile, bucketList);
+                TradeDay aDay = new TradeDay(aFile, tradePriceBucketList);
                 aDay.process();
                 log.debug("{}",aDay);
                 try {
@@ -104,8 +104,8 @@ public class Main {
     }
 
     private void appendBucketNamesToHeader() {
-        bucketList.forEach(aBucket -> {
-            OUT_HEADER = OUT_HEADER + "," + aBucket.getName();
+        tradePriceBucketList.forEach(aTradePriceBucket -> {
+            OUT_HEADER = OUT_HEADER + "," + aTradePriceBucket.getName();
         });
     }
 }

@@ -32,19 +32,19 @@ public class TradeDay {
     private File aFile;
 
     /**
-     * Collection of price range buckets to count trades
+     * Collection of price range tradePriceBuckets to count trades
      * that execute between the min and max defined for
      * the bucket.
      */
-    private static List<Bucket> buckets;
+    private static List<TradePriceBucket> tradePriceBuckets;
 
     /**
      *
      */
-    public TradeDay(File pFile, List<Bucket> pBuckets) {
+    public TradeDay(File pFile, List<TradePriceBucket> pTradePriceBuckets) {
         aFile = pFile;
         dateStr = pFile.getName().substring(0,8);
-        buckets = pBuckets;
+        tradePriceBuckets = pTradePriceBuckets;
     }
 
     void process() {
@@ -90,8 +90,8 @@ public class TradeDay {
      */
 
     private void distributeToBucket(TradeRecord tradeRecord) {
-        buckets.forEach( aBucket -> {
-            if(aBucket.acceptsTrade(tradeRecord)) return;
+        tradePriceBuckets.forEach(aTradePriceBucket -> {
+            if(aTradePriceBucket.acceptsTrade(tradeRecord)) return;
         });
     }
 
@@ -241,7 +241,7 @@ public class TradeDay {
                 getPctSellDolVol() + "," +
                 getPctUnknownDolVol());
 
-        buckets.forEach(aBucket -> recordString.append(",").append(aBucket.getTradeCount()));
+        tradePriceBuckets.forEach(aTradePriceBucket -> recordString.append(",").append(aTradePriceBucket.getTradeCount()));
 
 
         return recordString.toString();

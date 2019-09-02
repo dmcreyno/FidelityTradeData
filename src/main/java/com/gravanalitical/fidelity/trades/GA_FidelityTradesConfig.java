@@ -6,15 +6,12 @@ import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
-import org.apache.commons.configuration2.convert.ListDelimiterHandler;
-import org.apache.commons.configuration2.convert.ValueTransformer;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -40,7 +37,7 @@ class GA_FidelityTradesConfig {
     private static String baseDir;
     private static String fileSeparator;
     private static Configuration config;
-    private List<Bucket> bucketList = new ArrayList<>();
+    private List<TradePriceBucket> tradePriceBucketList = new ArrayList<>();
 
     private GA_FidelityTradesConfig() {
         baseDir = System.getProperty(HOME_KEY);
@@ -66,14 +63,14 @@ class GA_FidelityTradesConfig {
             List bucketLogxes = config.getList(BUCKET_LOGIC);
             int bucketListSize = bucketNames.size();
             for(int i = 0; i < bucketListSize; i++) {
-                // Bucket(String name, BigDecimal min, BigDecimal max, COMPARISON_LOGIC compLogic)
+                // TradePriceBucket(String name, BigDecimal min, BigDecimal max, COMPARISON_LOGIC compLogic)
                 String bucketName = (String) bucketNames.get(i);
                 BigDecimal bucketMin = new BigDecimal((String)bucketMins.get(i));
                 BigDecimal bucketMax = new BigDecimal((String)bucketMaxs.get(i));
-                Bucket.COMPARISON_LOGIC bucketLogx = Bucket.COMPARISON_LOGIC.valueOf((String)bucketLogxes.get(i));
-                Bucket aBucket = new Bucket(bucketName,bucketMin,bucketMax,bucketLogx);
-                log.info("Bucket: {}", aBucket);
-                this.bucketList.add(aBucket);
+                TradePriceBucket.COMPARISON_LOGIC bucketLogx = TradePriceBucket.COMPARISON_LOGIC.valueOf((String)bucketLogxes.get(i));
+                TradePriceBucket aTradePriceBucket = new TradePriceBucket(bucketName,bucketMin,bucketMax,bucketLogx);
+                log.info("TradePriceBucket: {}", aTradePriceBucket);
+                this.tradePriceBucketList.add(aTradePriceBucket);
             }
 
         }
@@ -109,7 +106,7 @@ class GA_FidelityTradesConfig {
         System.out.println(config);
     }
 
-    public List<Bucket> getBuckets() {
-        return this.bucketList;
+    public List<TradePriceBucket> getBuckets() {
+        return this.tradePriceBucketList;
     }
 }

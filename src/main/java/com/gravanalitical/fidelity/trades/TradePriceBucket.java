@@ -3,7 +3,7 @@ package com.gravanalitical.fidelity.trades;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public class Bucket {
+public class TradePriceBucket {
     private String name;
     private BigDecimal min = BigDecimal.ZERO;
     private BigDecimal max = BigDecimal.ZERO;
@@ -11,7 +11,7 @@ public class Bucket {
     public  enum COMPARISON_LOGIC {INCLUSIVE,EXCLUSIVE}
     public COMPARISON_LOGIC compLogic = COMPARISON_LOGIC.INCLUSIVE;
 
-    public Bucket(String name, BigDecimal min, BigDecimal max, COMPARISON_LOGIC compLogic) {
+    public TradePriceBucket(String name, BigDecimal min, BigDecimal max, COMPARISON_LOGIC compLogic) {
         this.name = name;
         this.min = min;
         this.max = max;
