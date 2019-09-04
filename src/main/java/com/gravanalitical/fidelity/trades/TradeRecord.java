@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.Objects;
+
 
 public class TradeRecord implements Comparable {
     private static final Logger log = LoggerFactory.getLogger("fidelity.trades.TradeRecord");
@@ -72,7 +72,7 @@ public class TradeRecord implements Comparable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(timeStr);
+        return super.hashCode();
     }
 
     /**
@@ -114,7 +114,6 @@ public class TradeRecord implements Comparable {
      * @throws ClassCastException   if the specified object's type prevents it
      *                              from being compared to this object.
      */
-    @Override
     public int compareTo(Object o) {
         TradeRecord other = (TradeRecord) o;
         if(other.timeStr == null || other.timeStr.trim().length() == 0) {
