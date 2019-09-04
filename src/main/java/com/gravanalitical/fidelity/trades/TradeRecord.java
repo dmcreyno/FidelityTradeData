@@ -26,11 +26,28 @@ public class TradeRecord implements Comparable {
     public TradeRecord(String pData) {
         log.trace("parsing data: {}", pData);
         StringTokenizer strtok = new StringTokenizer(pData,',');
+
         this.timeStr = strtok.next().replaceAll("\"","");
         this.price = new BigDecimal(strtok.next().replaceAll("\"",""));
         this.size = new BigDecimal(strtok.next().replaceAll("\"",""));
         this.bid = new BigDecimal(strtok.next().replaceAll("\"",""));
         this.ask = new BigDecimal(strtok.next().replaceAll("\"",""));
+    }
+
+    /**
+     * Needed for unit tests.
+     * @param pTimeString
+     * @param pPrice
+     * @param pSize
+     * @param pBid
+     * @param pAsk
+     */
+    public TradeRecord(String pTimeString, BigDecimal pPrice, BigDecimal pSize, BigDecimal pBid, BigDecimal pAsk) {
+        this.timeStr = pTimeString;
+        this.price = pPrice;
+        this.size = pSize;
+        this.bid = pBid;
+        this.ask = pAsk;
     }
 
     /**
@@ -54,7 +71,7 @@ public class TradeRecord implements Comparable {
         return this.price.multiply(this.size);
     }
 
-    private BigDecimal getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 

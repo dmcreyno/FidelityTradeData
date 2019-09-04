@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -31,11 +32,19 @@ public class TradeDay {
     private File aFile;
 
     /**
+     * Collection of price range tradePriceBuckets to count trades
+     * that execute between the min and max defined for
+     * the bucket.
+     */
+    private static List<TradePriceBucket> tradePriceBuckets;
+
+    /**
      *
      */
-    public TradeDay(File pFile) {
+    public TradeDay(File pFile, List<TradePriceBucket> pTradePriceBuckets) {
         aFile = pFile;
         dateStr = pFile.getName().substring(0,8);
+        tradePriceBuckets = pTradePriceBuckets;
     }
 
     void process() {
@@ -62,8 +71,8 @@ public class TradeDay {
                     try {
                         TradeRecord tr = TradeRecord.parse(currentLine);
                         if (log.isDebugEnabled()) log.debug("adding a trade . . . {}", tr);
-
                         this.tradeList.add(tr);
+                        distributeToBucket(tr);
                     } catch (Exception e) {
                         log.error("error processing line {} in file {}", lineCounter,aFile.getName());
                     }
@@ -74,6 +83,16 @@ public class TradeDay {
             log.error("reading file failed: {}", aFile.getAbsolutePath(), e);
         }
         reader.close();
+    }
+
+    /**
+     * Put the trade in a bucket.
+     */
+
+    private void distributeToBucket(TradeRecord tradeRecord) {
+        tradePriceBuckets.forEach(aTradePriceBucket -> {
+            if(aTradePriceBucket.acceptsTrade(tradeRecord)) return;
+        });
     }
 
     /**
@@ -205,7 +224,7 @@ public class TradeDay {
 
     @Override
     public String toString() {
-        return dateStr + "," +
+        StringBuilder recordString = new StringBuilder(dateStr + "," +
                 getAveragePrice() + "," +
                 getVolume() + "," +
                 getBuyVolume() + "," +
@@ -220,7 +239,12 @@ public class TradeDay {
                 getPctUnknownVol() + "," +
                 getPctBuyDolVol() + "," +
                 getPctSellDolVol() + "," +
-                getPctUnknownDolVol() + ",";
+                getPctUnknownDolVol());
+
+        tradePriceBuckets.forEach(aTradePriceBucket -> recordString.append(",").append(aTradePriceBucket.getTradeCount()));
+
+
+        return recordString.toString();
     }
 
     private BigDecimal getPctBuyVol() {
