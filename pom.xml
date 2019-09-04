@@ -7,6 +7,18 @@
     <groupId>com.gravanalitical</groupId>
     <artifactId>fidelity-trades</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <properties>
         <junit-verion>4.12</junit-verion>
@@ -66,11 +78,5 @@
             <artifactId>commons-collections4</artifactId>
             <version>4.4</version>
         </dependency>
-
-
-
-
-
     </dependencies>
-
 </project>
