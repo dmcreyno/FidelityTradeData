@@ -242,7 +242,7 @@ public class TradeDay {
                 getPctSellDolVol() + "," +
                 getPctUnknownDolVol());
 
-        tradePriceBuckets.forEach(aTradePriceBucket -> recordString.append(",").append(aTradePriceBucket.getTradeCount()));
+        tradePriceBuckets.forEach(aTradePriceBucket -> recordString.append(",").append(aTradePriceBucket.getPriceDollarVol()));
 
 
         return recordString.toString();

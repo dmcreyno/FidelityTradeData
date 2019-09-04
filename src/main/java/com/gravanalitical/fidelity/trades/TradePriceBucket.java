@@ -3,11 +3,24 @@ package com.gravanalitical.fidelity.trades;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+/**
+ * Each TradeDay gets its own set of price buckets to show the distribution.
+ * Three metrics are available.
+ * <ul>
+ *     <li>Trade Count: the number of trades for this bucket.</li>
+ *     <li>Price Volume: the number of shares traded for this bucket.</li>
+ *     <li>Price Dollar-Volume: The amount of money traded for this bucket. Demonstrates better than
+ *     anything else, where the money is going.</li>
+ * </ul>
+ */
 public class TradePriceBucket {
     private String name;
     private BigDecimal min = BigDecimal.ZERO;
     private BigDecimal max = BigDecimal.ZERO;
     private BigInteger tradeCount = BigInteger.ZERO;
+    private BigDecimal priceDollarVol = BigDecimal.ZERO;
+    private BigDecimal priceVolume = BigDecimal.ZERO;
+
     public  enum COMPARISON_LOGIC {INCLUSIVE,EXCLUSIVE}
     public COMPARISON_LOGIC compLogic = COMPARISON_LOGIC.INCLUSIVE;
 
@@ -16,6 +29,14 @@ public class TradePriceBucket {
         this.min = min;
         this.max = max;
         this.compLogic = compLogic;
+    }
+
+    public BigDecimal getPriceDollarVol() {
+        return priceDollarVol;
+    }
+
+    public BigDecimal getPriceVolume() {
+        return priceVolume;
     }
 
     public String getName() {
@@ -44,7 +65,12 @@ public class TradePriceBucket {
      * @return true if this bucket accepted the trade record.
      */
     public boolean acceptsTrade(TradeRecord tradeRecord) {
-        return belongsInThisBucket(tradeRecord.getPrice());
+        boolean rVal = belongsInThisBucket(tradeRecord.getPrice());
+        if(rVal) {
+            this.priceDollarVol = this.priceDollarVol.add(tradeRecord.getPrice().multiply(tradeRecord.getSize()));
+            this.priceVolume = this.priceVolume.add(tradeRecord.getSize());
+        }
+        return rVal;
     }
 
     private boolean belongsInThisBucket (BigDecimal pPrice) {
