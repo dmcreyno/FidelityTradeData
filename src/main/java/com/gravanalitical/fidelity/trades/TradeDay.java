@@ -36,15 +36,16 @@ public class TradeDay {
      * that execute between the min and max defined for
      * the bucket.
      */
-    private static List<TradePriceBucket> tradePriceBuckets;
+    private List<TradePriceBucket> tradePriceBuckets;
 
     /**
      *
      */
-    public TradeDay(File pFile, List<TradePriceBucket> pTradePriceBuckets) {
+    public TradeDay(File pFile) {
         aFile = pFile;
         dateStr = pFile.getName().substring(0,8);
-        tradePriceBuckets = pTradePriceBuckets;
+        tradePriceBuckets = GA_FidelityTradesConfig.getInstance().getBuckets();
+        ;
     }
 
     void process() {

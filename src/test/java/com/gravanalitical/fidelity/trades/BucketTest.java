@@ -17,7 +17,7 @@ public class BucketTest {
                 new BigDecimal("1000"),
                 new BigDecimal("0.0004"),
                 new BigDecimal("0.0005"));
-        Bucket aBucket = new Bucket("0004", new BigDecimal("0.0004"), new BigDecimal("0.0004"), Bucket.COMPARISON_LOGIC.INCLUSIVE);
+        TradePriceBucket aBucket = new TradePriceBucket("0004", new BigDecimal("0.0004"), new BigDecimal("0.0004"), TradePriceBucket.COMPARISON_LOGIC.INCLUSIVE);
         Assert.assertTrue(aBucket.acceptsTrade(tr));
     }
 
@@ -29,7 +29,7 @@ public class BucketTest {
                 new BigDecimal("1000"),
                 new BigDecimal("0.0004"),
                 new BigDecimal("0.0005"));
-        Bucket aBucket = new Bucket("0004", new BigDecimal("0.0004"), new BigDecimal("0.0004"), Bucket.COMPARISON_LOGIC.INCLUSIVE);
+        TradePriceBucket aBucket = new TradePriceBucket("0004", new BigDecimal("0.0004"), new BigDecimal("0.0004"), TradePriceBucket.COMPARISON_LOGIC.INCLUSIVE);
         Assert.assertFalse(aBucket.acceptsTrade(tr));
     }
 
@@ -41,9 +41,9 @@ public class BucketTest {
                 new BigDecimal("1000"),
                 new BigDecimal("0.0004"),
                 new BigDecimal("0.0005"));
-        Bucket aBucket = new Bucket("0004", new BigDecimal("0.0004"), new BigDecimal("0.0005"), Bucket.COMPARISON_LOGIC.INCLUSIVE);
+        TradePriceBucket aBucket = new TradePriceBucket("0004", new BigDecimal("0.0004"), new BigDecimal("0.0005"), TradePriceBucket.COMPARISON_LOGIC.INCLUSIVE);
         Assert.assertTrue(aBucket.acceptsTrade(tr));
-        aBucket = new Bucket("0003", new BigDecimal("0.0003"), new BigDecimal("0.0004"), Bucket.COMPARISON_LOGIC.INCLUSIVE);
+        aBucket = new TradePriceBucket("0003", new BigDecimal("0.0003"), new BigDecimal("0.0004"), TradePriceBucket.COMPARISON_LOGIC.INCLUSIVE);
         Assert.assertTrue(aBucket.acceptsTrade(tr));
     }
 
@@ -55,9 +55,9 @@ public class BucketTest {
                 new BigDecimal("1000"),
                 new BigDecimal("0.0004"),
                 new BigDecimal("0.0005"));
-        Bucket aBucket = new Bucket("0004", new BigDecimal("0.0004"), new BigDecimal("0.0004"), Bucket.COMPARISON_LOGIC.INCLUSIVE);
+        TradePriceBucket aBucket = new TradePriceBucket("0004", new BigDecimal("0.0004"), new BigDecimal("0.0004"), TradePriceBucket.COMPARISON_LOGIC.INCLUSIVE);
         Assert.assertFalse(aBucket.acceptsTrade(tr));
-        aBucket = new Bucket("0004", new BigDecimal("0.0004"), new BigDecimal("0.0004"), Bucket.COMPARISON_LOGIC.INCLUSIVE);
+        aBucket = new TradePriceBucket("0004", new BigDecimal("0.0004"), new BigDecimal("0.0004"), TradePriceBucket.COMPARISON_LOGIC.INCLUSIVE);
         Assert.assertFalse(aBucket.acceptsTrade(tr));
     }
 

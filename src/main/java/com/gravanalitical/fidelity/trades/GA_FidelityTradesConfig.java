@@ -37,13 +37,15 @@ class GA_FidelityTradesConfig {
     private static String baseDir;
     private static String fileSeparator;
     private static Configuration config;
-    private List<TradePriceBucket> tradePriceBucketList = new ArrayList<>();
 
     private GA_FidelityTradesConfig() {
         baseDir = System.getProperty(HOME_KEY);
         fileSeparator = System.getProperty("file.separator");
+        log.info("BASE_DIR: " + baseDir);
+        if(null == baseDir) {
+            throw new Error("based directory is null. Did you set the command line property, \"-D" + HOME_KEY + "?\"");
+        }
         if(log.isDebugEnabled()) {
-            log.debug("BASE_DIR: " + baseDir);
             log.debug("FILE SEP: " + fileSeparator);
         }
 
@@ -57,22 +59,6 @@ class GA_FidelityTradesConfig {
         try
         {
             config = builder.getConfiguration();
-            List bucketNames = config.getList(BUCKET_NAMES);
-            List bucketMaxs = config.getList(BUCKET_MAXS);
-            List bucketMins = config.getList(BUCKET_MINS);
-            List bucketLogxes = config.getList(BUCKET_LOGIC);
-            int bucketListSize = bucketNames.size();
-            for(int i = 0; i < bucketListSize; i++) {
-                // TradePriceBucket(String name, BigDecimal min, BigDecimal max, COMPARISON_LOGIC compLogic)
-                String bucketName = (String) bucketNames.get(i);
-                BigDecimal bucketMin = new BigDecimal((String)bucketMins.get(i));
-                BigDecimal bucketMax = new BigDecimal((String)bucketMaxs.get(i));
-                TradePriceBucket.COMPARISON_LOGIC bucketLogx = TradePriceBucket.COMPARISON_LOGIC.valueOf((String)bucketLogxes.get(i));
-                TradePriceBucket aTradePriceBucket = new TradePriceBucket(bucketName,bucketMin,bucketMax,bucketLogx);
-                log.info("TradePriceBucket: {}", aTradePriceBucket);
-                this.tradePriceBucketList.add(aTradePriceBucket);
-            }
-
         }
         catch(ConfigurationException cex)
         {
@@ -107,6 +93,23 @@ class GA_FidelityTradesConfig {
     }
 
     public List<TradePriceBucket> getBuckets() {
-        return this.tradePriceBucketList;
+        List<TradePriceBucket> tradePriceBucketList = new ArrayList<>();
+        List bucketNames = config.getList(BUCKET_NAMES);
+        List bucketMaxs = config.getList(BUCKET_MAXS);
+        List bucketMins = config.getList(BUCKET_MINS);
+        List bucketLogxes = config.getList(BUCKET_LOGIC);
+        int bucketListSize = bucketNames.size();
+        for(int i = 0; i < bucketListSize; i++) {
+            // TradePriceBucket(String name, BigDecimal min, BigDecimal max, COMPARISON_LOGIC compLogic)
+            String bucketName = (String) bucketNames.get(i);
+            BigDecimal bucketMin = new BigDecimal((String)bucketMins.get(i));
+            BigDecimal bucketMax = new BigDecimal((String)bucketMaxs.get(i));
+            TradePriceBucket.COMPARISON_LOGIC bucketLogx = TradePriceBucket.COMPARISON_LOGIC.valueOf((String)bucketLogxes.get(i));
+            TradePriceBucket aTradePriceBucket = new TradePriceBucket(bucketName,bucketMin,bucketMax,bucketLogx);
+            log.debug("TradePriceBucket: {}", aTradePriceBucket);
+            tradePriceBucketList.add(aTradePriceBucket);
+        }
+        return tradePriceBucketList;
     }
+
 }

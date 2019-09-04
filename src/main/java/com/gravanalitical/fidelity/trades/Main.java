@@ -4,7 +4,10 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -38,7 +41,6 @@ public class Main {
             ",Sell Dollar Vol Pct" +
             ",??? Dollar Vol Pct";
 
-    private List<TradePriceBucket> tradePriceBucketList;
 
     public Main() {
 
@@ -58,7 +60,6 @@ public class Main {
         String outStr = GA_FidelityTradesConfig.getInstance().getHomeDir();
         String fileSep = System.getProperty("file.separator");
         String ticker = GA_FidelityTradesConfig.getInstance().getTicker();
-        tradePriceBucketList = GA_FidelityTradesConfig.getInstance().getBuckets();
         File outfile;
         String inDirStr;
         Collection<File> inputList;
@@ -85,7 +86,7 @@ public class Main {
                 if(log.isInfoEnabled()) {
                     log.info("processing: {}",aFile.getName());
                 }
-                TradeDay aDay = new TradeDay(aFile, tradePriceBucketList);
+                TradeDay aDay = new TradeDay(aFile);
                 aDay.process();
                 log.debug("{}",aDay);
                 try {
@@ -104,7 +105,7 @@ public class Main {
     }
 
     private void appendBucketNamesToHeader() {
-        tradePriceBucketList.forEach(aTradePriceBucket -> {
+        GA_FidelityTradesConfig.getInstance().getBuckets().forEach(aTradePriceBucket -> {
             OUT_HEADER = OUT_HEADER + "," + aTradePriceBucket.getName();
         });
     }
