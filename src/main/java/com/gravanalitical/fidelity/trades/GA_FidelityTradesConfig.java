@@ -23,6 +23,8 @@ class GA_FidelityTradesConfig {
     private static final Logger log = LoggerFactory.getLogger("fidelity.trades.GA_FidelityTradesConfig");
 
     private static final String HOME_KEY                      = "com.ga.fidelity.trades.home";
+    private static final String OUTPUT_HEADER_LINE_01         = "com.ga.fidelity.trades.output.header1";
+    private static final String OUTPUT_HEADER_LINE_02         = "com.ga.fidelity.trades.output.header2";
     private static final String HEADER_SKIP_LINE_COUNT        = "com.ga.fidelity.trades.skip.header";
     private static final String TICKER                        = "com.ga.fidelity.trades.ticker";
     private static final String TRADES_BUCKET                 = "com.ga.fidelity.trades.bucket";
@@ -51,10 +53,10 @@ class GA_FidelityTradesConfig {
 
         Parameters params = new Parameters();
         FileBasedConfigurationBuilder<FileBasedConfiguration> builder =
-                new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
-                        .configure(params.properties()
-                                .setFileName(baseDir+fileSeparator+"fidelity.properties")
-                        .setListDelimiterHandler(new DefaultListDelimiterHandler(',')));
+                new FileBasedConfigurationBuilder<>(PropertiesConfiguration.class);
+
+        builder.configure(params.properties().setListDelimiterHandler(new DefaultListDelimiterHandler(','))
+                                .setFileName(baseDir+fileSeparator+"fidelity.properties"));
 
         try
         {
@@ -64,6 +66,8 @@ class GA_FidelityTradesConfig {
         {
             log.error("configuration failed.",cex);
             System.exit(-1);
+        } finally {
+
         }
     }
 
@@ -87,9 +91,33 @@ class GA_FidelityTradesConfig {
         return baseDir+fileSeparator+"input";
     }
 
+    public String getOutputHeader() {
+        // There are two rows to the header with different numbers of columns.
+        List columnNames = new ArrayList<>();
+        StringBuilder buffer = new StringBuilder();
+        int listSize;
+//        columnNames = config.getList(OUTPUT_HEADER_LINE_01);
+//        int listSize = columnNames.size();
+//        for(int i = 0; i < listSize; i++) {
+//            buffer.append(columnNames.get(i));
+//            if(i != listSize-1) {
+//                buffer.append(",");
+//            }
+//        }
+//        buffer.append("\n");
+        columnNames = config.getList(OUTPUT_HEADER_LINE_02);
+        listSize = columnNames.size();
+        for(int i = 0; i < listSize; i++) {
+            buffer.append(columnNames.get(i));
+            if(i != listSize-1) {
+                buffer.append(",");
+            }
+        }
+        return  buffer.toString();
+    }
+
     public static void main(String[] args) {
-        GA_FidelityTradesConfig local_config = GA_FidelityTradesConfig.getInstance();
-        System.out.println(config);
+        System.out.println(GA_FidelityTradesConfig.getInstance().getOutputHeader());
     }
 
     public List<TradePriceBucket> getBuckets() {

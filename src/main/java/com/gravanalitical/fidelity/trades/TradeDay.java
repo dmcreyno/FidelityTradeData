@@ -45,24 +45,23 @@ public class TradeDay {
         aFile = pFile;
         dateStr = pFile.getName().substring(0,8);
         tradePriceBuckets = GA_FidelityTradesConfig.getInstance().getBuckets();
-        ;
     }
 
     void process() {
-        CSVInputReader reader = new CSVInputReader(aFile);
+        CSVInputReader csvInputReader = new CSVInputReader(aFile);
         try {
-            reader.initFile();
+            csvInputReader.initFile();
         } catch (IOException e) {
             log.error("reader initiation failed.",e);
             System.exit(-1);
         }
         try {
-            String currentLine = reader.readLine();
+            String currentLine = csvInputReader.readLine();
             log.trace("throwing away header [{}]",currentLine);
             long lineCounter = 1L;
             boolean done = false;
             while(!done) {
-                if ((currentLine = reader.readLine()) == null
+                if ((currentLine = csvInputReader.readLine()) == null
                 || currentLine.startsWith("\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",")) {
                     done = true;
                 } else {
@@ -82,8 +81,9 @@ public class TradeDay {
             } // end while not done
         } catch (IOException e) {
             log.error("reading file failed: {}", aFile.getAbsolutePath(), e);
+        } finally {
+            csvInputReader.close();
         }
-        reader.close();
     }
 
     /**
