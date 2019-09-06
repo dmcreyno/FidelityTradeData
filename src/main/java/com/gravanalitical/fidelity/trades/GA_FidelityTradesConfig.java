@@ -24,7 +24,6 @@ class GA_FidelityTradesConfig {
 
     private static final String HOME_KEY                      = "com.ga.fidelity.trades.home";
     private static final String OUTPUT_HEADER_LINE_01         = "com.ga.fidelity.trades.output.header1";
-    private static final String OUTPUT_HEADER_LINE_02         = "com.ga.fidelity.trades.output.header2";
     private static final String HEADER_SKIP_LINE_COUNT        = "com.ga.fidelity.trades.skip.header";
     private static final String TICKER                        = "com.ga.fidelity.trades.ticker";
     private static final String TRADES_BUCKET                 = "com.ga.fidelity.trades.bucket";
@@ -105,7 +104,7 @@ class GA_FidelityTradesConfig {
 //            }
 //        }
 //        buffer.append("\n");
-        columnNames = config.getList(OUTPUT_HEADER_LINE_02);
+        columnNames = config.getList(OUTPUT_HEADER_LINE_01);
         listSize = columnNames.size();
         for(int i = 0; i < listSize; i++) {
             buffer.append(columnNames.get(i));
@@ -113,6 +112,8 @@ class GA_FidelityTradesConfig {
                 buffer.append(",");
             }
         }
+        // append the bucket list
+        buffer.append(getBucketListHeader());
         return  buffer.toString();
     }
 
@@ -137,7 +138,16 @@ class GA_FidelityTradesConfig {
             log.debug("TradePriceBucket: {}", aTradePriceBucket);
             tradePriceBucketList.add(aTradePriceBucket);
         }
+
         return tradePriceBucketList;
+    }
+
+    private String getBucketListHeader() {
+        StringBuilder buffer = new StringBuilder();
+        GA_FidelityTradesConfig.getInstance().getBuckets().forEach(aTradePriceBucket -> {
+            buffer.append(",\"").append(aTradePriceBucket.getName()).append("\"");
+        });
+        return buffer.toString();
     }
 
 }

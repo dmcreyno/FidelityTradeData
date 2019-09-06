@@ -62,8 +62,6 @@ public class Main {
         log.info("Output file, {}", outfile.getAbsolutePath());
 
         try {
-            // Fix header for variable number of price buckets
-            this.appendBucketNamesToHeader();
             FileWriter outFileWriter = new FileWriter(outfile);
             PrintWriter pw = new PrintWriter(outFileWriter);
             pw.println(OUT_HEADER);
@@ -97,9 +95,4 @@ public class Main {
         }
     }
 
-    private void appendBucketNamesToHeader() {
-        GA_FidelityTradesConfig.getInstance().getBuckets().forEach(aTradePriceBucket -> {
-            OUT_HEADER = OUT_HEADER + ",\"" + aTradePriceBucket.getName() + "\"";
-        });
-    }
 }
