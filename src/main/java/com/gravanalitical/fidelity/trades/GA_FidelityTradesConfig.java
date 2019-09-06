@@ -95,15 +95,6 @@ class GA_FidelityTradesConfig {
         List columnNames = new ArrayList<>();
         StringBuilder buffer = new StringBuilder();
         int listSize;
-//        columnNames = config.getList(OUTPUT_HEADER_LINE_01);
-//        int listSize = columnNames.size();
-//        for(int i = 0; i < listSize; i++) {
-//            buffer.append(columnNames.get(i));
-//            if(i != listSize-1) {
-//                buffer.append(",");
-//            }
-//        }
-//        buffer.append("\n");
         columnNames = config.getList(OUTPUT_HEADER_LINE_01);
         listSize = columnNames.size();
         for(int i = 0; i < listSize; i++) {
