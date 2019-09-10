@@ -15,8 +15,8 @@ import java.math.BigInteger;
  */
 public class TradePriceBucket {
     private String name;
-    private BigDecimal min = BigDecimal.ZERO;
-    private BigDecimal max = BigDecimal.ZERO;
+    private BigDecimal min;
+    private BigDecimal max;
     private BigInteger tradeCount = BigInteger.ZERO;
     private BigDecimal priceDollarVol = BigDecimal.ZERO;
     private BigDecimal priceVolume = BigDecimal.ZERO;
@@ -77,8 +77,11 @@ public class TradePriceBucket {
         boolean rVal = false;
         if(this.compLogic == COMPARISON_LOGIC.INCLUSIVE) {
             rVal = testInclusive(pPrice);
-        } else {
+        } else if(this.compLogic == COMPARISON_LOGIC.EXCLUSIVE){
             rVal = testExclusive(pPrice);
+        } else {
+            // something has gone horribly wrong
+            // maybe the compLogic var was not initialized???
         }
 
         if(rVal) {
