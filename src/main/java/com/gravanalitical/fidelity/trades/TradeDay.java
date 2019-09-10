@@ -75,6 +75,7 @@ public class TradeDay {
                         distributeToBucket(tr);
                     } catch (Exception e) {
                         log.error("error processing line {} in file {}", lineCounter,aFile.getName());
+                        log.error("error processing data, \"{}\"", currentLine, e);
                     }
                 } // end if check for end of file
                 lineCounter++;

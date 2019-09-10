@@ -73,8 +73,12 @@ public class Main {
             sortedInputList.addAll(inputList);
 
             sortedInputList.forEach( aFile -> {
+                String currentFileName = aFile.getName();
+                if(currentFileName.startsWith(".")) {
+                    log.debug("Skipping what appears to be a hidden file, {}",currentFileName);
+                }
                 if(log.isInfoEnabled()) {
-                    log.info("processing: {}",aFile.getName());
+                    log.info("processing: {}",currentFileName);
                 }
                 TradeDay aDay = new TradeDay(aFile);
                 aDay.process();
