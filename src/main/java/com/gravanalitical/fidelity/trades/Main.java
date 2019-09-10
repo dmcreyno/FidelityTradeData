@@ -18,28 +18,20 @@ import java.util.TreeSet;
  * Uses a "base" directory structure to hold the input files. The directory referenced
  * by -Dom.ga.fidelity.trades.home is assumed to hold an input folder named, "input" containing CSV
  * files named with the date of the day the trades were executed.
- *
+
+ * Reads the "fidelity.properties file referenced on the command line
+ * using the -D option where the base directory is defined. It is assumed the directory will have
+ * a sub-folder named <i>input</i> when the CSV files downloaded from Fidelity will be found.
+ * The code will pick up any file with a "cSV" extension.
+ * <b>Example</b><br>
+ * -Dcom.ga.fidelity.trades.home=/users/mary/trade_data/MSFT
+
  * The system uses the fidelity.properties file, also located in the base dire, to contain the ticker
  * symbol which will be used to generate the output file name CSV file.
  */
 public class Main {
     private static final Logger log = LoggerFactory.getLogger("fidelity.trades.Main");
-    private String OUT_HEADER = "Date" +
-            ",Avg Price" +
-            ",Volume" +
-            ",Buy Vol" +
-            ",Sell Vol" +
-            ",??? Vol" +
-            ",Dollar Vol" +
-            ",Buy Dollar Vol" +
-            ",Sell Dollar Vol" +
-            ",??? Dollar Vol" +
-            ",Buy Vol Pct" +
-            ",Sell Vol Pct" +
-            ",??? Vol Pct" +
-            ",Buy Dollar Vol Pct" +
-            ",Sell Dollar Vol Pct" +
-            ",??? Dollar Vol Pct";
+    private static String OUT_HEADER = GA_FidelityTradesConfig.getInstance().getOutputHeader();
 
 
     public Main() {
@@ -70,10 +62,8 @@ public class Main {
         log.info("Output file, {}", outfile.getAbsolutePath());
 
         try {
-            // Fix header for variable number of price buckets
-            this.appendBucketNamesToHeader();
-
-            PrintWriter pw = new PrintWriter(new FileWriter(outfile));
+            FileWriter outFileWriter = new FileWriter(outfile);
+            PrintWriter pw = new PrintWriter(outFileWriter);
             pw.println(OUT_HEADER);
 
             inDirStr = GA_FidelityTradesConfig.getInstance().getInputDir();
@@ -98,15 +88,11 @@ public class Main {
                 }
             });
             pw.close();
+            outFileWriter.close();
         } catch (IOException e) {
             log.error("cannot open output destination, {}.",outfile.getName(), e);
             System.exit(-1);
         }
     }
 
-    private void appendBucketNamesToHeader() {
-        GA_FidelityTradesConfig.getInstance().getBuckets().forEach(aTradePriceBucket -> {
-            OUT_HEADER = OUT_HEADER + "," + aTradePriceBucket.getName();
-        });
-    }
 }
