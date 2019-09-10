@@ -12,12 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Reads the data for one day of trading and stores the stats. Keeps the trades
+ * in a list. Also, puts the dollar volume into <i>buckets</i> which are
+ * defined in the configuration properties files.
  */
 public class TradeDay {
     private static final Logger log = LoggerFactory.getLogger("fidelity.trades.TradeDay");
     /**
-     *
+     * The date for which the data has been stored. Format: yyyymmdd.
      */
     private String dateStr;
 
@@ -39,7 +41,7 @@ public class TradeDay {
     private List<TradePriceBucket> tradePriceBuckets;
 
     /**
-     *
+     * The data comes as a CSV of trades for one day.
      */
     public TradeDay(File pFile) {
         aFile = pFile;
@@ -47,6 +49,10 @@ public class TradeDay {
         tradePriceBuckets = GA_FidelityTradesConfig.getInstance().getBuckets();
     }
 
+    /**
+     * Reads the File for the day. Puts the trade dollar-volume in the
+     * appropriate bucket.
+     */
     void process() {
         CSVInputReader csvInputReader = new CSVInputReader(aFile);
         try {
@@ -132,8 +138,6 @@ public class TradeDay {
         }
         return rVal;
     }
-
-
 
 
     /**

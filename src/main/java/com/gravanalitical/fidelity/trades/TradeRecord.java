@@ -6,7 +6,9 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 
-
+/**
+ * Data for a single trade.
+ */
 public class TradeRecord implements Comparable {
     private static final Logger log = LoggerFactory.getLogger("fidelity.trades.TradeRecord");
     public  enum BuySell {BUY, SELL, UNKOWN}
@@ -58,7 +60,14 @@ public class TradeRecord implements Comparable {
         return new TradeRecord(pData);
     }
 
-    BuySell sentiment() {
+    /**
+     * Using the bid and the ask price this function calculates
+     * a sentiment. If the trade is executed between the bid/ask then
+     * the sentiment is unknown. However if the trade is executed at the
+     * bid or at the ask then the trade is reported as a sell or a buy, respectively.
+     * @return enum BuySell
+     */
+    public BuySell sentiment() {
         if(price.compareTo(bid) <= 0) {
             return BuySell.SELL;
         } else if(price.compareTo(ask) >= 0) {
