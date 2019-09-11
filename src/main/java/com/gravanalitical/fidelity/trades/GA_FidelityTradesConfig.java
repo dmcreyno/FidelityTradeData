@@ -36,7 +36,6 @@ class GA_FidelityTradesConfig {
     private static final String OUTPUT_HEADER_LINE_01         = "com.ga.fidelity.trades.output.header1";
     private static final String HEADER_SKIP_LINE_COUNT        = "com.ga.fidelity.trades.skip.header";
     private static final String TICKER                        = "com.ga.fidelity.trades.ticker";
-    private static final String TRADES_BUCKET                 = "com.ga.fidelity.trades.bucket";
     private static final String BUCKET_NAMES                  = "com.ga.fidelity.trades.bucket.names";//=0001,0002
     private static final String BUCKET_MINS                   = "com.ga.fidelity.trades.bucket.mins";//=0.00001,0.00019
     private static final String BUCKET_MAXS                   = "com.ga.fidelity.trades.bucket.maxs";//=0.00020,0.000299
