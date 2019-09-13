@@ -34,6 +34,11 @@ public class TradeDay {
     private String dateStr;
 
     /**
+     * The day-of-trading, 1, 2, 3, 4, 5, 6, etc of the collection of daily trade data input files.
+     */
+    private int dayOrdinal;
+
+    /**
      *
      */
     private ArrayList<TradeRecord> tradeList = new ArrayList<>();
@@ -238,9 +243,42 @@ public class TradeDay {
         return rVal;
     }
 
+    public boolean isEmpty() {
+        return this.tradeList.isEmpty();
+    }
+
+    public int getDayOrdinal() {
+        return dayOrdinal;
+    }
+
+    public void setDayOrdinal(int pDayOrdinal) {
+        dayOrdinal = pDayOrdinal;
+    }
+
     @Override
     public String toString() {
-        StringBuilder recordString = new StringBuilder(dateStr + "," +
+        if(this.tradeList.isEmpty()) {
+            return  dayOrdinal + "," +
+                    dateStr + "," +
+                    0 + "," +
+                    0 + "," +
+                    0 + "," +
+                    0 + "," +
+                    0 + "," +
+                    0 + "," +
+                    0 + "," +
+                    0 + "," +
+                    0 + "," +
+                    0 + "," +
+                    0 + "," +
+                    0 + "," +
+                    0 + "," +
+                    0 + "," +
+                    0;
+        }
+
+        StringBuilder recordString = new StringBuilder(dayOrdinal + "," +
+                dateStr + "," +
                 getAveragePrice() + "," +
                 getVolume() + "," +
                 getBuyVolume() + "," +

@@ -80,23 +80,32 @@ public class Main {
 
             sortedInputList.addAll(inputList);
 
+            int fileCount = 0;
+
             sortedInputList.forEach( aFile -> {
                 String currentFileName = aFile.getName();
+
                 if(currentFileName.startsWith(".")) {
                     log.debug("Skipping what appears to be a hidden file, {}",currentFileName);
                 }
+
                 if(log.isInfoEnabled()) {
                     log.info("processing: {}",currentFileName);
                 }
+
                 TradeDay aDay = new TradeDay(aFile);
                 aDay.process();
-                log.debug("{}",aDay);
-                try {
-                    aDay.writeSummary(pw);
-                    pw.flush();
-                } catch (Exception e) {
-                    log.error("problems.", e);
-                    System.exit(-1);
+
+                if(!aDay.isEmpty()) {
+                    aDay.setDayOrdinal(this.incrementFileCount());
+                    log.debug("{}", aDay);
+                    try {
+                        aDay.writeSummary(pw);
+                        pw.flush();
+                    } catch (Exception e) {
+                        log.error("problems.", e);
+                        System.exit(-1);
+                    }
                 }
             });
             pw.close();
@@ -107,4 +116,9 @@ public class Main {
         }
     }
 
+    private int fileCounter = 0;
+
+    private int incrementFileCount() {
+        return ++fileCounter;
+    }
 }
