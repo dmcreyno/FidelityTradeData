@@ -114,7 +114,10 @@ public class TradeDay {
 
     private void distributeToBucket(TradeRecord tradeRecord) {
         tradePriceBuckets.forEach(aTradePriceBucket -> {
-            if(aTradePriceBucket.acceptsTrade(tradeRecord)) return;
+            log.debug("Asking trade bucket, {}, to accept trade price, {}.", aTradePriceBucket.getName(),tradeRecord.getPrice());
+            if(aTradePriceBucket.acceptsTrade(tradeRecord)) {
+                log.debug("Trade price {} was accepted by bucket, {}.",tradeRecord.getPrice(), aTradePriceBucket.getName());
+            }
         });
     }
 

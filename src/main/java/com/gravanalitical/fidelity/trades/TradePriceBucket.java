@@ -10,6 +10,9 @@
 
 package com.gravanalitical.fidelity.trades;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
@@ -24,6 +27,7 @@ import java.math.BigInteger;
  * </ul>
  */
 public class TradePriceBucket {
+    private static final Logger log = LoggerFactory.getLogger("fidelity.trades.TradePriceBucket");
     private String name;
     private BigDecimal min;
     private BigDecimal max;
@@ -86,13 +90,15 @@ public class TradePriceBucket {
 
     private boolean belongsInThisBucket (BigDecimal pPrice) {
         boolean rVal = false;
-        if(this.compLogic == COMPARISON_LOGIC.INCLUSIVE) {
+        if(compLogic == COMPARISON_LOGIC.INCLUSIVE) {
             rVal = testInclusive(pPrice);
-        } else if(this.compLogic == COMPARISON_LOGIC.EXCLUSIVE){
+        } else if(compLogic == COMPARISON_LOGIC.EXCLUSIVE){
             rVal = testExclusive(pPrice);
         } else {
             // something has gone horribly wrong
             // maybe the compLogic var was not initialized???
+            log.error("Unrecognized compLogic: {}", compLogic);
+            throw new IllegalArgumentException("unrecognized comparison logic value");
         }
 
         if(rVal) {

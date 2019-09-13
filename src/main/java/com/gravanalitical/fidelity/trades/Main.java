@@ -40,6 +40,8 @@ import java.util.TreeSet;
 public class Main {
     private static final Logger log = LoggerFactory.getLogger("fidelity.trades.Main");
     private static String OUT_HEADER = GA_FidelityTradesConfig.getInstance().getOutputHeader();
+    private int fileCounter = 0;
+
 
 
     public Main() {
@@ -115,8 +117,6 @@ public class Main {
             System.exit(-1);
         }
     }
-
-    private int fileCounter = 0;
 
     private int incrementFileCount() {
         return ++fileCounter;
