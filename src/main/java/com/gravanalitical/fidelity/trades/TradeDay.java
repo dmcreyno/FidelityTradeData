@@ -13,9 +13,7 @@ package com.gravanalitical.fidelity.trades;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -40,6 +38,10 @@ public class TradeDay {
     private int dayOrdinal;
 
     /**
+     * Date string. Currently provided as third line of csv file header.
+     */
+
+    /**
      *
      */
     private ArrayList<TradeRecord> tradeList = new ArrayList<>();
@@ -61,7 +63,6 @@ public class TradeDay {
      */
     public TradeDay(File pFile) {
         aFile = pFile;
-        dateStr = pFile.getName().substring(0,8);
         tradePriceBuckets = GA_FidelityTradesConfig.getInstance().getBuckets();
     }
 
@@ -73,6 +74,7 @@ public class TradeDay {
         CSVInputReader csvInputReader = new CSVInputReader(aFile);
         try {
             csvInputReader.initFile();
+            dateStr = csvInputReader.getDate();
         } catch (IOException e) {
             log.error("reader initiation failed.",e);
             System.exit(-1);
@@ -352,5 +354,53 @@ public class TradeDay {
 
     void writeSummary(PrintWriter psw) {
         psw.println(this.toCSVString());
+    }
+
+    /**
+     * Wrapper around a buffered reader. While there is not much value in wrapping that class
+     * this class will skip the summary header info Fidelity puts in their exports.
+     */
+    public static class CSVInputReader {
+        private static final Logger log = LoggerFactory.getLogger("fidelity.trades.CSVInputReader");
+        private static final int LINE_NO_DATE = 2;
+        private BufferedReader reader;
+        private String dateStr;
+        private File file;
+
+        /**
+         * CTOR accepting an instance of a File .
+         * @param pFile the file to read from.
+         */
+        public CSVInputReader(File pFile) {
+            file=pFile;
+        }
+
+        void initFile() throws IOException {
+            reader = new BufferedReader(new FileReader(file));
+            // throw away the first few lines (as set by )
+            for (int i = 0; i < GA_FidelityTradesConfig.getInstance().getHeaderSkipLineCount(); i++) {
+                String line = reader.readLine();
+                if(i == LINE_NO_DATE) {
+                    log.info("Processing file for date, {}.", line);
+                    dateStr = line;
+                }
+            }
+        }
+
+        String getDate() {
+            return this.dateStr;
+        }
+
+        String readLine() throws IOException {
+            return reader.readLine();
+        }
+
+        void close() {
+            try {
+                reader.close();
+            } catch (Exception e) {
+                log.error("problem closing reader for {}",file.getAbsolutePath(), e);
+            }
+        }
     }
 }
