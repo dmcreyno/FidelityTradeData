@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
@@ -258,8 +259,7 @@ public class TradeDay {
         dayOrdinal = pDayOrdinal;
     }
 
-    @Override
-    public String toString() {
+    public String toCSVString() {
         if(this.tradeList.isEmpty()) {
             return  dayOrdinal + "," +
                     dateStr + "," +
@@ -304,6 +304,28 @@ public class TradeDay {
         return recordString.toString();
     }
 
+    @Override
+    public String toString() {
+        if(this.tradeList.isEmpty()) {
+            return  "No trades recorded.";
+        }
+
+        String rVal =
+                "Summary for " + dateStr + "\n" +
+                "Volumne      : " + getVolume() + "\n" +
+                "Avg Price    : " + getAveragePrice() + "\n" +
+                "Dollar-Volume: " + getDollarVolume() + "\n" +
+                "Buy DV       : " + getBuyDollarVolume() + "\n" +
+                "Sell DV      : " + getSellDollarVolume() + "\n" +
+                "Unknown DV   : " + getUnknownDollarVolume() + "\n" +
+                "Buy DV %     : " + getPctBuyDolVol().multiply(new BigDecimal("100"), new MathContext(3, RoundingMode.HALF_UP)) + "\n" +
+                "Sell DV  %   : " + getPctSellDolVol().multiply(new BigDecimal("100"), new MathContext(3, RoundingMode.HALF_UP)) + "\n" +
+                "Unknown DV % : " + getPctUnknownDolVol().multiply(new BigDecimal("100"), new MathContext(3, RoundingMode.HALF_UP)) ;
+
+
+        return rVal;
+    }
+
     private BigDecimal getPctBuyVol() {
         return getBuyVolume().divide(getVolume(),5,RoundingMode.HALF_UP);
     }
@@ -329,6 +351,6 @@ public class TradeDay {
     }
 
     void writeSummary(PrintWriter psw) {
-        psw.println(this.toString());
+        psw.println(this.toCSVString());
     }
 }

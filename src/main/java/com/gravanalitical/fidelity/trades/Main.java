@@ -100,7 +100,7 @@ public class Main {
 
                 if(!aDay.isEmpty()) {
                     aDay.setDayOrdinal(this.incrementFileCount());
-                    log.debug("{}", aDay);
+                    log.info("{}", aDay);
                     try {
                         aDay.writeSummary(pw);
                         pw.flush();
