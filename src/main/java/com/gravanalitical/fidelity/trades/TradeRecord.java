@@ -15,12 +15,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
 /**
  * Data for a single trade.
  */
 public class TradeRecord implements Comparable {
     private static final Logger log = LoggerFactory.getLogger("fidelity.trades.TradeRecord");
+
+    MathContext mathCtx = new MathContext(Integer.MAX_VALUE, RoundingMode.HALF_UP);
 
     public  enum BuySell {BUY, SELL, UNKOWN}
 
@@ -41,10 +45,10 @@ public class TradeRecord implements Comparable {
         StringTokenizer strtok = new StringTokenizer(pData,',');
 
         this.timeStr = strtok.next().replaceAll("\"","");
-        this.price = new BigDecimal(strtok.next().replaceAll("\"",""));
-        this.size = new BigDecimal(strtok.next().replaceAll("\"",""));
-        this.bid = new BigDecimal(strtok.next().replaceAll("\"",""));
-        this.ask = new BigDecimal(strtok.next().replaceAll("\"",""));
+        this.price = new BigDecimal(strtok.next().replaceAll("\"",""),mathCtx);
+        this.size = new BigDecimal(strtok.next().replaceAll("\"",""),mathCtx);
+        this.bid = new BigDecimal(strtok.next().replaceAll("\"",""),mathCtx);
+        this.ask = new BigDecimal(strtok.next().replaceAll("\"",""),mathCtx);
     }
 
     /**

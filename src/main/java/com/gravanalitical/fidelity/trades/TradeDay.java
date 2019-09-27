@@ -17,6 +17,10 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.FieldPosition;
+import java.text.NumberFormat;
+import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +31,7 @@ import java.util.List;
  */
 public class TradeDay {
     private static final Logger log = LoggerFactory.getLogger("fidelity.trades.TradeDay");
+
     /**
      * The date for which the data has been stored. Format: yyyymmdd.
      */
@@ -57,6 +62,7 @@ public class TradeDay {
      * the bucket.
      */
     private List<TradePriceBucket> tradePriceBuckets;
+
 
     /**
      * The data comes as a CSV of trades for one day.
@@ -312,17 +318,25 @@ public class TradeDay {
             return  "No trades recorded.";
         }
 
+        // Create some formatters for the money and percentages and share volume
+        NumberFormat percentageFormatter = new DecimalFormat("#.0%");
+        NumberFormat shareVolumeFormatter = new DecimalFormat("#,###");
+        NumberFormat usdFormatter = new DecimalFormat("$#,##0.00");
+        NumberFormat usdTripsFormatter =    new DecimalFormat("$#,##0.000###");
+
+
+
         String rVal =
                 "Summary for " + dateStr + "\n" +
-                "Volumne      : " + getVolume() + "\n" +
-                "Avg Price    : " + getAveragePrice() + "\n" +
-                "Dollar-Volume: " + getDollarVolume() + "\n" +
-                "Buy DV       : " + getBuyDollarVolume() + "\n" +
-                "Sell DV      : " + getSellDollarVolume() + "\n" +
-                "Unknown DV   : " + getUnknownDollarVolume() + "\n" +
-                "Buy DV %     : " + getPctBuyDolVol().multiply(new BigDecimal("100"), new MathContext(3, RoundingMode.HALF_UP)) + "\n" +
-                "Sell DV  %   : " + getPctSellDolVol().multiply(new BigDecimal("100"), new MathContext(3, RoundingMode.HALF_UP)) + "\n" +
-                "Unknown DV % : " + getPctUnknownDolVol().multiply(new BigDecimal("100"), new MathContext(3, RoundingMode.HALF_UP)) ;
+                "Volumne      : " + shareVolumeFormatter.format(getVolume()) + "\n" +
+                "Avg Price    : " + usdTripsFormatter.format(getAveragePrice()) + "\n" +
+                "Dollar-Volume: " + usdFormatter.format(getDollarVolume()) + "\n" +
+                "Buy DV       : " + usdFormatter.format(getBuyDollarVolume()) + "\n" +
+                "Sell DV      : " + usdFormatter.format(getSellDollarVolume()) + "\n" +
+                "Unknown DV   : " + usdFormatter.format(getUnknownDollarVolume()) + "\n" +
+                "Buy DV %     : " + percentageFormatter.format(getPctBuyDolVol()) + "\n" +
+                "Sell DV  %   : " + percentageFormatter.format(getPctSellDolVol()) + "\n" +
+                "Unknown DV % : " + percentageFormatter.format(getPctUnknownDolVol()) ;
 
 
         return rVal;
