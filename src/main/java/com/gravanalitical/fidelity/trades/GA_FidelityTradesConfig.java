@@ -17,8 +17,9 @@ import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
 import org.apache.commons.configuration2.ex.ConfigurationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ import java.util.List;
  * -Dcom.ga.fidelity.trades.home=/users/mary/trade_data/MSFT
  */
 class GA_FidelityTradesConfig {
-    private static final Logger log = LoggerFactory.getLogger("fidelity.trades.GA_FidelityTradesConfig");
+    private static final Logger log = LogManager.getLogger("fidelity.trades");
 
     private static final String HOME_KEY                      = "com.ga.fidelity.trades.home";
     private static final String OUTPUT_HEADER_LINE_01         = "com.ga.fidelity.trades.output.header1";

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" name="TradeData" packages="">
+    <Appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%-5p %c{1}:%L - %m%n"/>
+        </Console>
+        <File name="file" fileName="${sys:com.ga.fidelity.trades.home}/log.txt" append="false">
+            <PatternLayout pattern="%-5p %c{1}:%L - %m%n"/>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="error">
+            <AppenderRef ref="STDOUT"/>
+        </Root>
+        <Logger name="fidelity.trades" level="info">
+            <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="file"/>
+        </Logger>
+    </Loggers>
+</Configuration>

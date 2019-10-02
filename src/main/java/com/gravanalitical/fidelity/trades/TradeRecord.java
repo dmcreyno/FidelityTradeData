@@ -11,8 +11,8 @@
 package com.gravanalitical.fidelity.trades;
 
 import org.apache.commons.text.StringTokenizer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -22,7 +22,7 @@ import java.math.RoundingMode;
  * Data for a single trade.
  */
 public class TradeRecord implements Comparable {
-    private static final Logger log = LoggerFactory.getLogger("fidelity.trades.TradeRecord");
+    private static final Logger log = LogManager.getLogger("fidelity.trades");
 
     MathContext mathCtx = new MathContext(Integer.MAX_VALUE, RoundingMode.HALF_UP);
 

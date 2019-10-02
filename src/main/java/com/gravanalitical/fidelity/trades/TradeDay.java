@@ -10,8 +10,8 @@
 
 package com.gravanalitical.fidelity.trades;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -30,7 +30,7 @@ import java.util.List;
  * defined in the configuration properties files.
  */
 public class TradeDay {
-    private static final Logger log = LoggerFactory.getLogger("fidelity.trades.TradeDay");
+    private static final Logger log = LogManager.getLogger("fidelity.trades.TradeDay");
 
     /**
      * The date for which the data has been stored. Format: yyyymmdd.
@@ -378,7 +378,7 @@ public class TradeDay {
      * this class will skip the summary header info Fidelity puts in their exports.
      */
     public static class CSVInputReader {
-        private static final Logger log = LoggerFactory.getLogger("fidelity.trades.CSVInputReader");
+        private static final Logger log = LogManager.getLogger("fidelity.trades");
         private static final int LINE_NO_DATE = 2;
         private BufferedReader reader;
         private String dateStr;

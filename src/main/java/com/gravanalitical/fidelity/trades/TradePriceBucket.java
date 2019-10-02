@@ -10,8 +10,8 @@
 
 package com.gravanalitical.fidelity.trades;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -27,7 +27,7 @@ import java.math.BigInteger;
  * </ul>
  */
 public class TradePriceBucket {
-    private static final Logger log = LoggerFactory.getLogger("fidelity.trades.TradePriceBucket");
+    private static final Logger log = LogManager.getLogger("fidelity.trades");
     private String name;
     private BigDecimal min;
     private BigDecimal max;

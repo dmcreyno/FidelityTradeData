@@ -11,8 +11,8 @@
 package com.gravanalitical.fidelity.trades;
 
 import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -38,7 +38,7 @@ import java.util.TreeSet;
  * symbol which will be used to generate the output file name CSV file.
  */
 public class Main {
-    private static final Logger log = LoggerFactory.getLogger("fidelity.trades.Main");
+    private static final Logger log = LogManager.getLogger("fidelity.trades");
     private static String OUT_HEADER = GA_FidelityTradesConfig.getInstance().getOutputHeader();
     private int fileCounter = 0;
 
