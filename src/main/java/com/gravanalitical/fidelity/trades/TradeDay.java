@@ -328,15 +328,18 @@ public class TradeDay {
 
         String rVal =
                 "Summary for " + dateStr + "\n" +
-                "Volumne      : " + shareVolumeFormatter.format(getVolume()) + "\n" +
-                "Avg Price    : " + usdTripsFormatter.format(getAveragePrice()) + "\n" +
-                "Dollar-Volume: " + usdFormatter.format(getDollarVolume()) + "\n" +
-                "Buy DV       : " + usdFormatter.format(getBuyDollarVolume()) + "\n" +
-                "Sell DV      : " + usdFormatter.format(getSellDollarVolume()) + "\n" +
-                "Unknown DV   : " + usdFormatter.format(getUnknownDollarVolume()) + "\n" +
-                "Buy DV %     : " + percentageFormatter.format(getPctBuyDolVol()) + "\n" +
-                "Sell DV  %   : " + percentageFormatter.format(getPctSellDolVol()) + "\n" +
-                "Unknown DV % : " + percentageFormatter.format(getPctUnknownDolVol()) ;
+                        "Avg Price\t\t: " + usdTripsFormatter.format(getAveragePrice()) + "\n" +
+                        "Volume\t\t\t: " + shareVolumeFormatter.format(getVolume()) + "\n" +
+                        "\tBuy Vol\t\t: " + shareVolumeFormatter.format(getBuyVolume()) + "\n" +
+                        "\tSell Vol\t: " + shareVolumeFormatter.format(getSellVolume()) + "\n" +
+                        "\tUnknown Vol\t: " + shareVolumeFormatter.format(getUnknownVolume()) + "\n" +
+                        "Dollar-Volume\t: " + usdFormatter.format(getDollarVolume()) + "\n" +
+                        "\tBuy DV\t\t: " + usdFormatter.format(getBuyDollarVolume()) + "\n" +
+                        "\tSell DV\t\t: " + usdFormatter.format(getSellDollarVolume()) + "\n" +
+                        "\tUnknown DV\t: " + usdFormatter.format(getUnknownDollarVolume()) + "\n" +
+                        "Buy DV %\t\t: " + percentageFormatter.format(getPctBuyDolVol()) + "\n" +
+                        "Sell DV  %\t\t: " + percentageFormatter.format(getPctSellDolVol()) + "\n" +
+                        "Unknown DV %\t: " + percentageFormatter.format(getPctUnknownDolVol()) ;
 
 
         return rVal;
