@@ -327,7 +327,7 @@ public class TradeDay {
 
 
         String rVal =
-                "Summary for " + dateStr + "\n" +
+                "**** Summary for " + dateStr + "****\n" +
                         "Avg Price\t\t: " + usdTripsFormatter.format(getAveragePrice()) + "\n" +
                         "Volume\t\t\t: " + shareVolumeFormatter.format(getVolume()) + "\n" +
                         "\tBuy Vol\t\t: " + shareVolumeFormatter.format(getBuyVolume()) + "\n" +

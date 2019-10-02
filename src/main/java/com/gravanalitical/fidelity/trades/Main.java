@@ -31,7 +31,7 @@ import java.util.TreeSet;
  * Reads the "fidelity.properties file referenced on the command line
  * using the -D option where the base directory is defined. It is assumed the directory will have
  * a sub-folder named <i>input</i> when the CSV files downloaded from Fidelity will be found.
- * The code will pick up any file with a "cSV" extension.
+ * The code will pick up any file with a "csv" extension.
  * <b>Example</b><br>
  * -Dcom.ga.fidelity.trades.home=/users/mary/trade_data/MSFT
  * The system uses the fidelity.properties file, also located in the base dire, to contain the ticker
@@ -100,7 +100,8 @@ public class Main {
 
                 if(!aDay.isEmpty()) {
                     aDay.setDayOrdinal(this.incrementFileCount());
-                    log.info("{}", aDay);
+                    log.info(GA_FidelityTradesConfig.PRINT_MARKER,"{}", aDay);
+                    log.info("{}", aDay.toCSVString());
                     try {
                         aDay.writeSummary(pw);
                         pw.flush();

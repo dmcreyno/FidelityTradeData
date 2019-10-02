@@ -19,6 +19,8 @@ import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 
 
 import java.math.BigDecimal;
@@ -41,6 +43,9 @@ class GA_FidelityTradesConfig {
     private static final String BUCKET_MINS                   = "com.ga.fidelity.trades.bucket.mins";//=0.00001,0.00019
     private static final String BUCKET_MAXS                   = "com.ga.fidelity.trades.bucket.maxs";//=0.00020,0.000299
     private static final String BUCKET_LOGIC                  = "com.ga.fidelity.trades.bucket.logx";//=INCLUSIVE,INCLUSIVE
+
+    public static final Marker DEV_MARKER = MarkerManager.getMarker("DEV");
+    public static final Marker PRINT_MARKER = MarkerManager.getMarker("PRINT");
 
 
     private static final GA_FidelityTradesConfig _instance = new GA_FidelityTradesConfig();
