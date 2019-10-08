@@ -26,11 +26,19 @@ public class TradeDayFormatFactory {
         return rVal;
     }
 
+    /**
+     *
+     * @return a formatter with the default delimiter, comma.
+     */
     public static TradeDayPresentation getCsvFormatter() {
         return getFormatter(FORMATTER.CSV);
     }
 
 
+    /**
+     *
+     * @return a formatter with the default delimiter, colon.
+     */
     public static TradeDayPresentation getTabularFormatter() {
         return getFormatter(FORMATTER.TABULAR);
     }
