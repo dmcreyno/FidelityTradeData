@@ -10,14 +10,14 @@
 
 package com.gravanalitical.fidelity.trades;
 
+import com.gravanalitical.fidelity.trades.format.TradeDayFormatFactory;
+import com.gravanalitical.fidelity.trades.format.TradeDayPresentation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -127,11 +127,24 @@ public class TradeDay {
         });
     }
 
+    public String getDateStr() {
+        return dateStr;
+    }
+
+    public ArrayList<TradeRecord> getTradeList() {
+        return tradeList;
+    }
+
+    public List<TradePriceBucket> getTradePriceBuckets() {
+        return tradePriceBuckets;
+    }
+
+
     /**
      *
      * @return the average price for the day
      */
-    private BigDecimal getAveragePrice() {
+    public BigDecimal getAveragePrice() {
         return getDollarVolume().divide(getVolume(),5, RoundingMode.HALF_UP);
     }
 
@@ -139,7 +152,7 @@ public class TradeDay {
      *
      * @return the volume for the day
      */
-    private BigDecimal getVolume() {
+    public BigDecimal getVolume() {
         BigDecimal rVal = BigDecimal.ZERO;
 
         for (TradeRecord tradeRecord : tradeList) {
@@ -152,7 +165,7 @@ public class TradeDay {
      *
      * @return the buy volume for the day
      */
-    private BigDecimal getBuyVolume() {
+    public BigDecimal getBuyVolume() {
         BigDecimal rVal = BigDecimal.ZERO;
 
         for (TradeRecord trade : tradeList) {
@@ -168,7 +181,7 @@ public class TradeDay {
      *
      * @return the sell volume for the day
      */
-    private BigDecimal getSellVolume() {
+    public BigDecimal getSellVolume() {
         BigDecimal rVal = BigDecimal.ZERO;
 
         for (TradeRecord trade : tradeList) {
@@ -183,7 +196,7 @@ public class TradeDay {
      *
      * @return the unknown volume for the day
      */
-    private BigDecimal getUnknownVolume() {
+    public BigDecimal getUnknownVolume() {
         BigDecimal rVal = BigDecimal.ZERO;
 
         for (TradeRecord trade : tradeList) {
@@ -198,7 +211,7 @@ public class TradeDay {
      *
      * @return the dollar volume for the day
      */
-    private BigDecimal getDollarVolume() {
+    public BigDecimal getDollarVolume() {
         BigDecimal rVal = BigDecimal.ZERO;
 
         for (TradeRecord tradeRecord : tradeList) {
@@ -211,7 +224,7 @@ public class TradeDay {
      *
      * @return the dollar buy volume for the day
      */
-    private BigDecimal getBuyDollarVolume() {
+    public BigDecimal getBuyDollarVolume() {
         BigDecimal rVal = BigDecimal.ZERO;
 
         for (TradeRecord trade : tradeList) {
@@ -226,7 +239,7 @@ public class TradeDay {
      *
      * @return the dollar sell volume for the day
      */
-    private BigDecimal getSellDollarVolume() {
+    public BigDecimal getSellDollarVolume() {
         BigDecimal rVal = BigDecimal.ZERO;
 
         for (TradeRecord trade : tradeList) {
@@ -241,7 +254,7 @@ public class TradeDay {
      *
      * @return the dollar unknown volume for the day
      */
-    private BigDecimal getUnknownDollarVolume() {
+    public BigDecimal getUnknownDollarVolume() {
         BigDecimal rVal = BigDecimal.ZERO;
 
         for (TradeRecord trade : tradeList) {
@@ -264,110 +277,38 @@ public class TradeDay {
         dayOrdinal = pDayOrdinal;
     }
 
-    public String toCSVString() {
-        if(this.tradeList.isEmpty()) {
-            return  dayOrdinal + "," +
-                    dateStr + "," +
-                    0 + "," +
-                    0 + "," +
-                    0 + "," +
-                    0 + "," +
-                    0 + "," +
-                    0 + "," +
-                    0 + "," +
-                    0 + "," +
-                    0 + "," +
-                    0 + "," +
-                    0 + "," +
-                    0 + "," +
-                    0 + "," +
-                    0 + "," +
-                    0;
-        }
-
-        StringBuilder recordString = new StringBuilder(dayOrdinal + "," +
-                dateStr + "," +
-                getAveragePrice() + "," +
-                getVolume() + "," +
-                getBuyVolume() + "," +
-                getSellVolume() + "," +
-                getUnknownVolume() + "," +
-                getDollarVolume() + "," +
-                getBuyDollarVolume() + "," +
-                getSellDollarVolume() + "," +
-                getUnknownDollarVolume() + "," +
-                getPctBuyVol() + "," +
-                getPctSellVol() + "," +
-                getPctUnknownVol() + "," +
-                getPctBuyDolVol() + "," +
-                getPctSellDolVol() + "," +
-                getPctUnknownDolVol());
-
-        tradePriceBuckets.forEach(aTradePriceBucket -> recordString.append(",").append(aTradePriceBucket.getPriceDollarVol()));
-
-
-        return recordString.toString();
-    }
 
     @Override
     public String toString() {
-        if(this.tradeList.isEmpty()) {
-            return  "No trades recorded.";
-        }
-
-        // Create some formatters for the money and percentages and share volume
-        NumberFormat percentageFormatter = new DecimalFormat("#.0%");
-        NumberFormat shareVolumeFormatter = new DecimalFormat("#,###");
-        NumberFormat usdFormatter = new DecimalFormat("$#,##0.00");
-        NumberFormat usdTripsFormatter =    new DecimalFormat("$#,##0.000###");
-
-
-
-        String rVal =
-                "**** Summary for " + dateStr + "****\n" +
-                        "Avg Price\t\t: " + usdTripsFormatter.format(getAveragePrice()) + "\n" +
-                        "Volume\t\t\t: " + shareVolumeFormatter.format(getVolume()) + "\n" +
-                        "\tBuy Vol\t\t: " + shareVolumeFormatter.format(getBuyVolume()) + "\n" +
-                        "\tSell Vol\t: " + shareVolumeFormatter.format(getSellVolume()) + "\n" +
-                        "\tUnknown Vol\t: " + shareVolumeFormatter.format(getUnknownVolume()) + "\n" +
-                        "Dollar-Volume\t: " + usdFormatter.format(getDollarVolume()) + "\n" +
-                        "\tBuy DV\t\t: " + usdFormatter.format(getBuyDollarVolume()) + "\n" +
-                        "\tSell DV\t\t: " + usdFormatter.format(getSellDollarVolume()) + "\n" +
-                        "\tUnknown DV\t: " + usdFormatter.format(getUnknownDollarVolume()) + "\n" +
-                        "Buy DV %\t\t: " + percentageFormatter.format(getPctBuyDolVol()) + "\n" +
-                        "Sell DV  %\t\t: " + percentageFormatter.format(getPctSellDolVol()) + "\n" +
-                        "Unknown DV %\t: " + percentageFormatter.format(getPctUnknownDolVol()) ;
-
-
-        return rVal;
+        return TradeDayFormatFactory.getTabularFormatter().formatTradeDay(this);
     }
 
-    private BigDecimal getPctBuyVol() {
+    public BigDecimal getPctBuyVol() {
         return getBuyVolume().divide(getVolume(),5,RoundingMode.HALF_UP);
     }
 
-    private BigDecimal getPctSellVol() {
+    public BigDecimal getPctSellVol() {
         return getSellVolume().divide(getVolume(),5,RoundingMode.HALF_UP);
     }
 
-    private BigDecimal getPctUnknownVol() {
+    public BigDecimal getPctUnknownVol() {
         return getUnknownVolume().divide(getVolume(),5,RoundingMode.HALF_UP);
     }
 
-    private BigDecimal getPctBuyDolVol() {
+    public BigDecimal getPctBuyDolVol() {
         return getBuyDollarVolume().divide(getDollarVolume(),5,RoundingMode.HALF_UP);
     }
 
-    private BigDecimal getPctSellDolVol() {
+    public BigDecimal getPctSellDolVol() {
         return getSellDollarVolume().divide(getDollarVolume(),5,RoundingMode.HALF_UP);
     }
 
-    private BigDecimal getPctUnknownDolVol() {
+    public BigDecimal getPctUnknownDolVol() {
         return getUnknownDollarVolume().divide(getDollarVolume(),5,RoundingMode.HALF_UP);
     }
 
-    void writeSummary(PrintWriter psw) {
-        psw.println(this.toCSVString());
+    public void writeSummary(PrintWriter psw, TradeDayPresentation formatter) {
+        psw.println(formatter.formatTradeDay(this));
     }
 
     /**

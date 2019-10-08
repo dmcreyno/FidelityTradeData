@@ -10,6 +10,8 @@
 
 package com.gravanalitical.fidelity.trades;
 
+import com.gravanalitical.fidelity.trades.format.TradeDayFormatFactory;
+import com.gravanalitical.fidelity.trades.format.TradeDayPresentation;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -100,10 +102,12 @@ public class Main {
 
                 if(!aDay.isEmpty()) {
                     aDay.setDayOrdinal(this.incrementFileCount());
-                    log.info(GA_FidelityTradesConfig.PRINT_MARKER,"{}", aDay);
-                    log.info("{}", aDay.toCSVString());
+                    TradeDayPresentation formatter = TradeDayFormatFactory.getCsvFormatter();
+                    String logMessage = formatter.formatTradeDay(aDay);
+                    log.info(GA_FidelityTradesConfig.PRINT_MARKER,"{}", TradeDayFormatFactory.getTabularFormatter().formatTradeDay(aDay));
+                    log.info("{}", logMessage);
                     try {
-                        aDay.writeSummary(pw);
+                        aDay.writeSummary(pw, formatter);
                         pw.flush();
                     } catch (Exception e) {
                         log.error("problems.", e);
