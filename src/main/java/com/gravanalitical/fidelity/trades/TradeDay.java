@@ -12,6 +12,7 @@ package com.gravanalitical.fidelity.trades;
 
 import com.gravanalitical.fidelity.trades.format.TradeDayFormatFactory;
 import com.gravanalitical.fidelity.trades.format.TradeDayPresentation;
+import com.gravanalitical.locale.DisplayKeys;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -336,7 +337,7 @@ public class TradeDay {
             for (int i = 0; i < GA_FidelityTradesConfig.getInstance().getHeaderSkipLineCount(); i++) {
                 String line = reader.readLine();
                 if(i == LINE_NO_DATE) {
-                    log.info("Processing file for date, {}.", line);
+                    log.info(DisplayKeys.get(DisplayKeys.PROCESSING_FILE_DATE), line);
                     dateStr = line;
                 }
             }
@@ -354,7 +355,7 @@ public class TradeDay {
             try {
                 reader.close();
             } catch (Exception e) {
-                log.error("problem closing reader for {}",file.getAbsolutePath(), e);
+                log.error(DisplayKeys.get(DisplayKeys.ERROR_FILE_CLOSE),file.getAbsolutePath(), e);
             }
         }
     }

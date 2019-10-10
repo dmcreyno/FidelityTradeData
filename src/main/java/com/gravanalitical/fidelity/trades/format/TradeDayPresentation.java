@@ -21,5 +21,4 @@ public interface TradeDayPresentation {
      * @return
      */
     String formatTradeDay(TradeDay aTradeDay);
-    TradeDayPresentation setDelimiter(String pDelimiter);
 }

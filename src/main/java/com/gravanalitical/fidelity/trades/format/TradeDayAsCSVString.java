@@ -12,14 +12,7 @@ public class TradeDayAsCSVString implements TradeDayPresentation {
     public TradeDayAsCSVString() {
 
     }
-    public TradeDayAsCSVString(String pDelimiter) {
-        delimiter = pDelimiter;
-    }
-    @Override
-    public TradeDayPresentation setDelimiter(String pDelimiter) {
-        delimiter = pDelimiter;
-        return this;
-    }
+
     /**
      * @param aTradeDay
      * @return

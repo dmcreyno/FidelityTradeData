@@ -10,6 +10,7 @@
 
 package com.gravanalitical.fidelity.trades;
 
+import com.gravanalitical.locale.DisplayKeys;
 import org.apache.commons.text.StringTokenizer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,7 +42,7 @@ public class TradeRecord implements Comparable {
      * "Time","Last Price","Last Size","Bid Price","Ask Price",
      */
     public TradeRecord(String pData) {
-        log.trace("parsing data: {}", pData);
+        log.trace(DisplayKeys.get(DisplayKeys.LOG_PARSING), pData);
         StringTokenizer strtok = new StringTokenizer(pData,',');
 
         this.timeStr = strtok.next().replaceAll("\"","");
@@ -71,7 +72,7 @@ public class TradeRecord implements Comparable {
      * "Time","Last Price","Last Size","Bid Price","Ask Price",
      */
     static TradeRecord parse(String pData) {
-        log.trace("parsing data: {}", pData);
+        log.trace(DisplayKeys.get(DisplayKeys.LOG_PARSING), pData);
         return new TradeRecord(pData);
     }
 

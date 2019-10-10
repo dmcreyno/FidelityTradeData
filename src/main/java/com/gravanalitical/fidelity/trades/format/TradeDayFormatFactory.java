@@ -1,14 +1,11 @@
 package com.gravanalitical.fidelity.trades.format;
 
+import com.gravanalitical.locale.DisplayKeys;
+
 public class TradeDayFormatFactory {
 
     public enum FORMATTER {TABULAR, CSV}
 
-    public static TradeDayPresentation getFormatter(FORMATTER requestedFormatter, String pDelimiter) {
-        TradeDayPresentation rVal = TradeDayFormatFactory.getFormatter(requestedFormatter);
-        rVal.setDelimiter(pDelimiter);
-        return rVal;
-    }
 
     public static TradeDayPresentation getFormatter(FORMATTER requestedFormatter) {
         TradeDayPresentation rVal = null;
@@ -20,7 +17,7 @@ public class TradeDayFormatFactory {
                 rVal = new TradeDayAsTabular();
                 break;
             default:
-                throw new IllegalArgumentException("Unrecognized formatter specified, " + requestedFormatter);
+                throw new IllegalArgumentException(DisplayKeys.get(DisplayKeys.ERROR_FORMATTER_UNKNOWN, requestedFormatter));
         }
 
         return rVal;

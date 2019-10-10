@@ -12,6 +12,7 @@ package com.gravanalitical.fidelity.trades;
 
 import com.gravanalitical.fidelity.trades.format.TradeDayFormatFactory;
 import com.gravanalitical.fidelity.trades.format.TradeDayPresentation;
+import com.gravanalitical.locale.DisplayKeys;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,18 +52,16 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        log.info("starting . . .");
+        log.info(DisplayKeys.get(DisplayKeys.STARTUP));
         Main app = new Main();
         app.processDirectory();
     }
 
     /**
-     * Processes all files with ex
+     * Processes all files from the "input" directory ending with "csv"
      */
     private void processDirectory() {
-        String[] csvExt = {"csv"};
         String outStr = GA_FidelityTradesConfig.getInstance().getHomeDir();
-        String fileSep = System.getProperty("file.separator");
         String ticker = GA_FidelityTradesConfig.getInstance().getTicker();
         File outfile;
         String inDirStr;
@@ -70,16 +69,16 @@ public class Main {
         TreeSet<File> sortedInputList;
 
 
-        outfile = new File(outStr+fileSep+ticker+".csv");
-        log.info("Output file, {}", outfile.getAbsolutePath());
+        outfile = new File(outStr+System.getProperty("file.separator") + ticker + "." + GA_FidelityTradesConfig.CSV_FILE_EXTENSION);
+        log.info(DisplayKeys.get(DisplayKeys.PROCESSING_OUTPUT_FILE), outfile.getAbsolutePath());
 
-        try {
-            FileWriter outFileWriter = new FileWriter(outfile);
-            PrintWriter pw = new PrintWriter(outFileWriter);
+        try (   FileWriter outFileWriter = new FileWriter(outfile);
+                PrintWriter pw = new PrintWriter(outFileWriter)
+             ) {
             pw.println(OUT_HEADER);
 
             inDirStr = GA_FidelityTradesConfig.getInstance().getInputDir();
-            inputList = FileUtils.listFiles(new File(inDirStr),csvExt,false);
+            inputList = FileUtils.listFiles(new File(inDirStr),GA_FidelityTradesConfig.FILE_EXT_FOR_PROCESSING,false);
             sortedInputList = new TreeSet<>(Comparator.comparing(File::getName));
 
             sortedInputList.addAll(inputList);
@@ -90,11 +89,11 @@ public class Main {
                 String currentFileName = aFile.getName();
 
                 if(currentFileName.startsWith(".")) {
-                    log.debug("Skipping what appears to be a hidden file, {}",currentFileName);
+                    log.debug(DisplayKeys.get(DisplayKeys.SKIPPING_HIDDEN_FILE),currentFileName);
                 }
 
                 if(log.isInfoEnabled()) {
-                    log.info("processing: {}",currentFileName);
+                    log.info(DisplayKeys.get(DisplayKeys.PROCESSING_FILE),currentFileName);
                 }
 
                 TradeDay aDay = new TradeDay(aFile);
@@ -110,15 +109,13 @@ public class Main {
                         aDay.writeSummary(pw, formatter);
                         pw.flush();
                     } catch (Exception e) {
-                        log.error("problems.", e);
+                        log.error(DisplayKeys.get(DisplayKeys.ERROR), e);
                         System.exit(-1);
                     }
                 }
             });
-            pw.close();
-            outFileWriter.close();
         } catch (IOException e) {
-            log.error("cannot open output destination, {}.",outfile.getName(), e);
+            log.error(DisplayKeys.get(DisplayKeys.ERROR_PROC_FILE),outfile.getName(), e);
             System.exit(-1);
         }
     }

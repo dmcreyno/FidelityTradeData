@@ -10,6 +10,7 @@
 
 package com.gravanalitical.fidelity.trades;
 
+import com.gravanalitical.locale.DisplayKeys;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -97,7 +98,7 @@ public class TradePriceBucket {
         } else {
             // something has gone horribly wrong
             // maybe the compLogic var was not initialized???
-            log.error("Unrecognized compLogic: {}", compLogic);
+            log.error(DisplayKeys.get(DisplayKeys.ERROR_COMP_LOGIC), compLogic);
             throw new IllegalArgumentException("unrecognized comparison logic value");
         }
 
