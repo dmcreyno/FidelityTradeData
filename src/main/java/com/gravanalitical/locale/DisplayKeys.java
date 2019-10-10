@@ -42,7 +42,6 @@ public class DisplayKeys {
     public static final String LOG_PARSING                  = "messageKey.trace.parsing.data";
 
     private static DisplayKeys _instance = new DisplayKeys();
-    private Locale locale;
     private ResourceBundle displayKeys;
 
     private DisplayKeys() {
