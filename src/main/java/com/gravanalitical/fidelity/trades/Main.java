@@ -19,6 +19,7 @@ package com.gravanalitical.fidelity.trades;
 
 import com.gravanalitical.fidelity.trades.format.TradeDayFormatFactory;
 import com.gravanalitical.fidelity.trades.format.TradeDayPresentation;
+import com.gravanalitical.fidelity.trades.format.TradeMonthAsTabular;
 import com.gravanalitical.locale.DisplayKeys;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -51,8 +52,7 @@ public class Main {
     private static final Logger log = LogManager.getLogger("fidelity.trades");
     private static String OUT_HEADER = GA_FidelityTradesConfig.getInstance().getOutputHeader();
     private int fileCounter = 0;
-
-
+    private TradeMonth monthly = new TradeMonth();
 
     public Main() {
 
@@ -75,6 +75,7 @@ public class Main {
         Collection<File> inputList;
         TreeSet<File> sortedInputList;
 
+        TradeMonthAsTabular monthFormatter = new TradeMonthAsTabular();
 
         outfile = new File(outStr+System.getProperty("file.separator") + ticker + "." + GA_FidelityTradesConfig.CSV_FILE_EXTENSION);
         log.info(DisplayKeys.get(DisplayKeys.PROCESSING_OUTPUT_FILE), outfile.getAbsolutePath());
@@ -107,6 +108,7 @@ public class Main {
                 aDay.process();
 
                 if(!aDay.isEmpty()) {
+                    updateMonthlyValues(aDay);
                     aDay.setDayOrdinal(this.incrementFileCount());
                     TradeDayPresentation formatter = TradeDayFormatFactory.getCsvFormatter();
                     String logMessage = formatter.formatTradeDay(aDay);
@@ -121,13 +123,27 @@ public class Main {
                     }
                 }
             });
+            log.info(GA_FidelityTradesConfig.PRINT_MARKER, monthFormatter.formatTradeMonth(this.monthly));
         } catch (IOException e) {
             log.error(DisplayKeys.get(DisplayKeys.ERROR_PROC_FILE),outfile.getName(), e);
             System.exit(-1);
         }
     }
 
+    private void updateMonthlyValues(TradeDay pADay) {
+        this.monthly.addTotalVolume(pADay.getVolume());
+        this.monthly.addTotalBuyVolume(pADay.getBuyVolume());
+        this.monthly.addTotalSellVolume(pADay.getSellVolume());
+        this.monthly.addTotalUnknownVolume(pADay.getUnknownVolume());
+
+        this.monthly.addTotalDollars(pADay.getDollarVolume());
+        this.monthly.addTotalBuyDollars(pADay.getBuyDollarVolume());
+        this.monthly.addTotalSellDollars(pADay.getSellDollarVolume());
+        this.monthly.addTotalUnknownDollars(pADay.getUnknownDollarVolume());
+    }
+
     private int incrementFileCount() {
         return ++fileCounter;
     }
+
 }

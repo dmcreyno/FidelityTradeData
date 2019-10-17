@@ -55,6 +55,7 @@ class GA_FidelityTradesConfig {
         private static final String BUCKET_MINS                   = "com.ga.fidelity.trades.bucket.mins";  //=0.00001,0.00019
         private static final String BUCKET_MAXS                   = "com.ga.fidelity.trades.bucket.maxs";  //=0.00020,0.000299
         private static final String BUCKET_LOGIC                  = "com.ga.fidelity.trades.bucket.logx";  //=INCLUSIVE,INCLUSIVE
+        private static final String BIG_NUMBER_SCALE              = "com.ga.fidelity.trades.scale";
     }
 
     /**
@@ -120,6 +121,10 @@ class GA_FidelityTradesConfig {
 
     int getHeaderSkipLineCount() {
         return config.getInt(PropertyConstants.HEADER_SKIP_LINE_COUNT);
+    }
+
+    int getMathScale() {
+        return config.getInt(PropertyConstants.BIG_NUMBER_SCALE);
     }
 
     String getTicker() {

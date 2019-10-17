@@ -153,7 +153,7 @@ public class TradeDay {
      * @return the average price for the day
      */
     public BigDecimal getAveragePrice() {
-        return getDollarVolume().divide(getVolume(),5, RoundingMode.HALF_UP);
+        return getDollarVolume().divide(getVolume(), GA_FidelityTradesConfig.getInstance().getMathScale(), RoundingMode.HALF_UP);
     }
 
     /**

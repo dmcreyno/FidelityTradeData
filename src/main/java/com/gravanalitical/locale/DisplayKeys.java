@@ -56,6 +56,8 @@ public class DisplayKeys {
     public static final String ERROR_COMP_LOGIC             = "messageKey.error.unrecognized.logic";
     public static final String ERROR_FORMATTER_UNKNOWN      = "messageKey.error.formatter.unrecognized";
     public static final String LOG_PARSING                  = "messageKey.trace.parsing.data";
+    public static final String SUMMARY_OVERALL_HEADER       = "messageKey.summary.overall.header";
+    public static final String SUMMARY_MONTH_VWAP           = "messageKey.summary.monthly.avgPrice";
 
     private static DisplayKeys _instance = new DisplayKeys();
     private ResourceBundle displayKeys;

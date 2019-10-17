@@ -35,7 +35,7 @@ public class TradeDayAsTabular implements TradeDayPresentation {
         }
 
         // Create some formatters for the money and percentages and share volume
-        NumberFormat percentageFormatter = new DecimalFormat("#.0%");
+        NumberFormat percentageFormatter = new DecimalFormat("0.0##%");
         NumberFormat shareVolumeFormatter = new DecimalFormat("#,###");
         NumberFormat usdFormatter = new DecimalFormat("$#,##0.00");
         NumberFormat usdTripsFormatter =    new DecimalFormat("$#,##0.000###");
