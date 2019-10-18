@@ -325,7 +325,7 @@ public class TradeDay {
      */
     public static class CSVInputReader {
         private static final Logger log = LogManager.getLogger("fidelity.trades");
-        private static final int LINE_NO_DATE = 2;
+        private static final int LINE_NO_DATE = GA_FidelityTradesConfig.getInstance().getDateLineNumber();
         private BufferedReader reader;
         private String dateStr;
         private File file;
@@ -340,11 +340,11 @@ public class TradeDay {
 
         void initFile() throws IOException {
             reader = new BufferedReader(new FileReader(file));
-            // throw away the first few lines (as set by )
+            // throw away the first few lines (as set by getHeaderSkipLineCount)
             for (int i = 0; i < GA_FidelityTradesConfig.getInstance().getHeaderSkipLineCount(); i++) {
                 String line = reader.readLine();
-                if(i == LINE_NO_DATE) {
-                    log.info(DisplayKeys.get(DisplayKeys.PROCESSING_FILE_DATE), line);
+                if(i == LINE_NO_DATE) { // the date line number. Date is read from file.
+                    log.debug(DisplayKeys.get(DisplayKeys.PROCESSING_FILE_DATE), line);
                     dateStr = line;
                 }
             }

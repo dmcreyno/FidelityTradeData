@@ -54,13 +54,13 @@ public class Main {
     private int fileCounter = 0;
     private TradeMonth monthly = new TradeMonth();
 
-    public Main() {
+    public Main(String[] args) {
 
     }
 
     public static void main(String[] args) {
         log.info(DisplayKeys.get(DisplayKeys.STARTUP));
-        Main app = new Main();
+        Main app = new Main(args);
         app.processDirectory();
     }
 
@@ -78,7 +78,7 @@ public class Main {
         TradeMonthAsTabular monthFormatter = new TradeMonthAsTabular();
 
         outfile = new File(outStr+System.getProperty("file.separator") + ticker + "." + GA_FidelityTradesConfig.CSV_FILE_EXTENSION);
-        log.info(DisplayKeys.get(DisplayKeys.PROCESSING_OUTPUT_FILE), outfile.getAbsolutePath());
+        log.debug(DisplayKeys.get(DisplayKeys.PROCESSING_OUTPUT_FILE), outfile.getAbsolutePath());
 
         try (   FileWriter outFileWriter = new FileWriter(outfile);
                 PrintWriter pw = new PrintWriter(outFileWriter)
@@ -91,8 +91,6 @@ public class Main {
 
             sortedInputList.addAll(inputList);
 
-            int fileCount = 0;
-
             sortedInputList.forEach( aFile -> {
                 String currentFileName = aFile.getName();
 
@@ -100,8 +98,8 @@ public class Main {
                     log.debug(DisplayKeys.get(DisplayKeys.SKIPPING_HIDDEN_FILE),currentFileName);
                 }
 
-                if(log.isInfoEnabled()) {
-                    log.info(DisplayKeys.get(DisplayKeys.PROCESSING_FILE),currentFileName);
+                if(log.isDebugEnabled()) {
+                    log.debug(DisplayKeys.get(DisplayKeys.PROCESSING_FILE),currentFileName);
                 }
 
                 TradeDay aDay = new TradeDay(aFile);
