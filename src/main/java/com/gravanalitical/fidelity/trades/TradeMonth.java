@@ -98,7 +98,7 @@ public class TradeMonth {
 
     /**
      *
-     * @return the average price for the day
+     * @return the average price for the month
      */
     public BigDecimal getAveragePrice() {
         return getDollarVolume().divide(getVolume(), GA_FidelityTradesConfig.getInstance().getMathScale(), RoundingMode.HALF_UP);
