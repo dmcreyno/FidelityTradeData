@@ -37,10 +37,10 @@ public class TradeRecord implements Comparable {
     public  enum BuySell {BUY, SELL, UNKOWN}
 
     private String timeStr;
-    private BigDecimal price;
-    private BigDecimal size;
-    private BigDecimal bid;
-    private BigDecimal ask;
+    private BigDecimal price = BigDecimal.ZERO;
+    private BigDecimal size = BigDecimal.ZERO;
+    private BigDecimal bid = BigDecimal.ZERO;
+    private BigDecimal ask = BigDecimal.ZERO;
 
     public TradeRecord() {
     }
@@ -55,8 +55,16 @@ public class TradeRecord implements Comparable {
         this.timeStr = strtok.next().replaceAll("\"","");
         this.price = new BigDecimal(strtok.next().replaceAll("\"",""),mathCtx);
         this.size = new BigDecimal(strtok.next().replaceAll("\"",""),mathCtx);
-        this.bid = new BigDecimal(strtok.next().replaceAll("\"",""),mathCtx);
-        this.ask = new BigDecimal(strtok.next().replaceAll("\"",""),mathCtx);
+        try {
+            this.bid = new BigDecimal(strtok.next().replaceAll("\"", ""), mathCtx);
+        } catch(NumberFormatException nfex) {
+            log.warn("Trade day has no bid info. Data: {}", pData);
+        }
+        try {
+            this.ask = new BigDecimal(strtok.next().replaceAll("\"", ""), mathCtx);
+        } catch(NumberFormatException nfex) {
+            log.warn("Trade day has no ask info. Data: {}", pData);
+        }
     }
 
     /**
@@ -91,6 +99,9 @@ public class TradeRecord implements Comparable {
      * @return enum BuySell
      */
     public BuySell sentiment() {
+        if(bid.equals(BigDecimal.ZERO) && ask.equals(BigDecimal.ZERO)) {
+            return BuySell.UNKOWN;
+        }
         if(price.compareTo(bid) <= 0) {
             return BuySell.SELL;
         } else if(price.compareTo(ask) >= 0) {
