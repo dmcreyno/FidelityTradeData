@@ -2,16 +2,10 @@
 <Configuration status="warn" name="TradeData" packages="">
     <Appenders>
         <Console name="STDOUT" target="SYSTEM_OUT">
-            <PatternLayout pattern="%-5p %c{1}:%L - %m%n"/>
-            <NoMarkerFilter onMatch="ACCEPT" onMismatch="DENY" />
+            <PatternLayout pattern="%-5p %c{1} - [%X{ticker}] %m%n"/>
         </Console>
         <File name="file" fileName="${sys:com.ga.fidelity.trades.home}/log.txt" append="false">
-            <PatternLayout pattern="%-5p %c{1}:%L - %m%n"/>
-            <NoMarkerFilter onMatch="ACCEPT" onMismatch="DENY" />
-        </File>
-        <File name="summary" fileName="${sys:com.ga.fidelity.trades.home}/summary.txt" append="false">
-            <PatternLayout pattern="%m%n"/>
-            <MarkerFilter marker="PRINT" onMatch="ACCEPT" onMismatch="DENY" />
+            <PatternLayout pattern="%-5p %c{1} - [%X{ticker}] %m%n"/>
         </File>
     </Appenders>
     <Loggers>
@@ -20,7 +14,9 @@
         </Root>
         <Logger name="fidelity.trades" level="info">
             <AppenderRef ref="file"/>
-            <AppenderRef ref="summary"/>
+        </Logger>
+        <Logger name="fidelity.trades.TradeDay" level="info">
+            <AppenderRef ref="file"/>
         </Logger>
     </Loggers>
 </Configuration>

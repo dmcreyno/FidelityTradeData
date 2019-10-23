@@ -28,7 +28,7 @@ import java.util.ResourceBundle;
  * Class to encapsulate internationalization features.
  */
 public class DisplayKeys {
-    private static final Logger log = LogManager.getLogger("fidelity.trades");
+    private static final Logger log = LogManager.getLogger("fidelity.trades.DisplayKeys");
 
     public static final String STARTUP                      = "messageKey.startup";
     public static final String PROCESSING                   = "messageKey.processing";

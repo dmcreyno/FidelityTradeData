@@ -30,7 +30,7 @@ import java.math.RoundingMode;
  * Data for a single trade.
  */
 public class TradeRecord implements Comparable {
-    private static final Logger log = LogManager.getLogger("fidelity.trades");
+    private static final Logger log = LogManager.getLogger("fidelity.trades.TradeRecord");
 
     MathContext mathCtx = new MathContext(Integer.MAX_VALUE, RoundingMode.HALF_UP);
 

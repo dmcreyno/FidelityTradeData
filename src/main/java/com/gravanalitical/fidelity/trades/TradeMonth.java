@@ -1,5 +1,6 @@
 package com.gravanalitical.fidelity.trades;
 
+import com.gravanalitical.fidelity.trades.config.GA_FidelityTradesConfig;
 import com.gravanalitical.fidelity.trades.format.TradeMonthAsTabular;
 
 import java.io.PrintWriter;
@@ -19,7 +20,11 @@ public class TradeMonth {
     private BigDecimal totalSellDollars = BigDecimal.ZERO;
     private BigDecimal totalUnknownDollars = BigDecimal.ZERO;
 
-    public TradeMonth() {}
+    private GA_FidelityTradesConfig config;
+
+    public TradeMonth(GA_FidelityTradesConfig pConfig) {
+        config = pConfig;
+    }
 
 
     public BigDecimal getVolume() {
@@ -101,6 +106,6 @@ public class TradeMonth {
      * @return the average price for the month
      */
     public BigDecimal getAveragePrice() {
-        return getDollarVolume().divide(getVolume(), GA_FidelityTradesConfig.getInstance().getMathScale(), RoundingMode.HALF_UP);
+        return getDollarVolume().divide(getVolume(), config.getMathScale(), RoundingMode.HALF_UP);
     }
 }

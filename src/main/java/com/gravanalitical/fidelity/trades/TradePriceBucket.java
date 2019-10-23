@@ -35,7 +35,7 @@ import java.math.BigInteger;
  * </ul>
  */
 public class TradePriceBucket {
-    private static final Logger log = LogManager.getLogger("fidelity.trades");
+    private static final Logger log = LogManager.getLogger("fidelity.trades.TradePriceBucket");
     private String name;
     private BigDecimal min;
     private BigDecimal max;

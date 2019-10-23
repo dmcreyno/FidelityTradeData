@@ -17,6 +17,7 @@
 
 package com.gravanalitical.fidelity.trades;
 
+import com.gravanalitical.fidelity.trades.config.GA_FidelityTradesConfig;
 import com.gravanalitical.fidelity.trades.format.TradeDayFormatFactory;
 import com.gravanalitical.fidelity.trades.format.TradeDayPresentation;
 import com.gravanalitical.fidelity.trades.format.TradeMonthAsTabular;
@@ -24,11 +25,13 @@ import com.gravanalitical.locale.DisplayKeys;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.TreeSet;
@@ -49,11 +52,11 @@ import java.util.TreeSet;
  * symbol which will be used to generate the output file name CSV file.
  */
 public class Main {
-    private static final Logger log = LogManager.getLogger("fidelity.trades");
-    private static String OUT_HEADER = GA_FidelityTradesConfig.getInstance().getOutputHeader();
+    private static final Logger log = LogManager.getLogger("fidelity.trades.Main");
     private int fileCounter = 0;
-    private TradeMonth monthly = new TradeMonth();
+    private TradeMonth monthly;
 
+    @SuppressWarnings({"unused"})
     public Main(String[] args) {
 
     }
@@ -61,15 +64,38 @@ public class Main {
     public static void main(String[] args) {
         log.info(DisplayKeys.get(DisplayKeys.STARTUP));
         Main app = new Main(args);
-        app.processDirectory();
+        try {
+            String baseDir = System.getProperty(GA_FidelityTradesConfig.PropertyConstants.HOME_KEY);
+            File dir = FileUtils.getFile(baseDir);
+            File[] files = dir.listFiles();
+            if(null == files) {
+                log.error("No directories to process.");
+            } else {
+                Arrays.stream(files).filter(File::isDirectory).forEach(file -> {
+                    String baseDirName = file.getAbsolutePath();
+                    ThreadContext.put("ticker", file.getName());
+                    log.info(DisplayKeys.get(DisplayKeys.PROCESSING_FILE), baseDirName);
+                    app.processDirectory(baseDirName);
+                    ThreadContext.pop();
+                });
+            }
+        } catch(Exception ex) {
+            log.error(DisplayKeys.get(DisplayKeys.ERROR), ex);
+            ex.printStackTrace();
+        }
+
     }
 
     /**
-     * Processes all files from the "input" directory ending with "csv"
+     * Traverses all directories and processes the inputs for each. Each directory is a ticker symbol
+     * and the program expects to find a "fidelity.properties" within each.
      */
-    private void processDirectory() {
-        String outStr = GA_FidelityTradesConfig.getInstance().getHomeDir();
-        String ticker = GA_FidelityTradesConfig.getInstance().getTicker();
+    private void processDirectory(String baseDireName) {
+        GA_FidelityTradesConfig config = GA_FidelityTradesConfig.init(baseDireName);
+        monthly = new TradeMonth(config);
+        String OUT_HEADER = config.getOutputHeader();
+        String outStr = config.getHomeDir();
+        String ticker = config.getTicker();
         File outfile;
         String inDirStr;
         Collection<File> inputList;
@@ -81,11 +107,14 @@ public class Main {
         log.debug(DisplayKeys.get(DisplayKeys.PROCESSING_OUTPUT_FILE), outfile.getAbsolutePath());
 
         try (   FileWriter outFileWriter = new FileWriter(outfile);
-                PrintWriter pw = new PrintWriter(outFileWriter)
+                PrintWriter pw = new PrintWriter(outFileWriter);
+                FileWriter summaryFileWriter = new FileWriter(baseDireName + "/summary.txt");
+                PrintWriter summaryPrintWriter = new PrintWriter(summaryFileWriter)
              ) {
+
             pw.println(OUT_HEADER);
 
-            inDirStr = GA_FidelityTradesConfig.getInstance().getInputDir();
+            inDirStr = config.getInputDir();
             inputList = FileUtils.listFiles(new File(inDirStr),GA_FidelityTradesConfig.FILE_EXT_FOR_PROCESSING,false);
             sortedInputList = new TreeSet<>(Comparator.comparing(File::getName));
 
@@ -102,7 +131,7 @@ public class Main {
                     log.debug(DisplayKeys.get(DisplayKeys.PROCESSING_FILE),currentFileName);
                 }
 
-                TradeDay aDay = new TradeDay(aFile);
+                TradeDay aDay = new TradeDay(aFile, config);
                 aDay.process();
 
                 if(!aDay.isEmpty()) {
@@ -110,7 +139,8 @@ public class Main {
                     aDay.setDayOrdinal(this.incrementFileCount());
                     TradeDayPresentation formatter = TradeDayFormatFactory.getCsvFormatter();
                     String logMessage = formatter.formatTradeDay(aDay);
-                    log.info(GA_FidelityTradesConfig.PRINT_MARKER,"{}", TradeDayFormatFactory.getTabularFormatter().formatTradeDay(aDay));
+                    summaryPrintWriter.println(TradeDayFormatFactory.getTabularFormatter().formatTradeDay(aDay));
+                    //log.info(GA_FidelityTradesConfig.PRINT_MARKER,"{}", TradeDayFormatFactory.getTabularFormatter().formatTradeDay(aDay));
                     log.info("{}", logMessage);
                     try {
                         aDay.writeSummary(pw, formatter);
@@ -121,7 +151,7 @@ public class Main {
                     }
                 }
             });
-            log.info(GA_FidelityTradesConfig.PRINT_MARKER, monthFormatter.formatTradeMonth(this.monthly));
+            summaryPrintWriter.println(monthFormatter.formatTradeMonth(this.monthly));
         } catch (IOException e) {
             log.error(DisplayKeys.get(DisplayKeys.ERROR_PROC_FILE),outfile.getName(), e);
             System.exit(-1);

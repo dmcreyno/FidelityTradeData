@@ -17,6 +17,7 @@
 
 package com.gravanalitical.fidelity.trades;
 
+import com.gravanalitical.fidelity.trades.config.GA_FidelityTradesConfig;
 import com.gravanalitical.fidelity.trades.format.TradeDayFormatFactory;
 import com.gravanalitical.fidelity.trades.format.TradeDayPresentation;
 import com.gravanalitical.locale.DisplayKeys;
@@ -68,13 +69,15 @@ public class TradeDay {
      */
     private List<TradePriceBucket> tradePriceBuckets;
 
+    private GA_FidelityTradesConfig config;
 
     /**
      * The data comes as a CSV of trades for one day.
      */
-    public TradeDay(File pFile) {
+    public TradeDay(File pFile, GA_FidelityTradesConfig pConfig) {
+        config = pConfig;
         aFile = pFile;
-        tradePriceBuckets = GA_FidelityTradesConfig.getInstance().getBuckets();
+        tradePriceBuckets = config.getBuckets();
     }
 
     /**
@@ -153,7 +156,7 @@ public class TradeDay {
      * @return the average price for the day
      */
     public BigDecimal getAveragePrice() {
-        return getDollarVolume().divide(getVolume(), GA_FidelityTradesConfig.getInstance().getMathScale(), RoundingMode.HALF_UP);
+        return getDollarVolume().divide(getVolume(), config.getMathScale(), RoundingMode.HALF_UP);
     }
 
     /**
@@ -323,9 +326,9 @@ public class TradeDay {
      * Wrapper around a buffered reader. While there is not much value in wrapping that class
      * this class will skip the summary header info Fidelity puts in their exports.
      */
-    public static class CSVInputReader {
-        private static final Logger log = LogManager.getLogger("fidelity.trades");
-        private static final int LINE_NO_DATE = GA_FidelityTradesConfig.getInstance().getDateLineNumber();
+    public class CSVInputReader {
+        private final Logger log = LogManager.getLogger("fidelity.trades");
+        private final int LINE_NO_DATE = config.getDateLineNumber();
         private BufferedReader reader;
         private String dateStr;
         private File file;
@@ -341,7 +344,7 @@ public class TradeDay {
         void initFile() throws IOException {
             reader = new BufferedReader(new FileReader(file));
             // throw away the first few lines (as set by getHeaderSkipLineCount)
-            for (int i = 0; i < GA_FidelityTradesConfig.getInstance().getHeaderSkipLineCount(); i++) {
+            for (int i = 0; i < config.getHeaderSkipLineCount(); i++) {
                 String line = reader.readLine();
                 if(i == LINE_NO_DATE) { // the date line number. Date is read from file.
                     log.debug(DisplayKeys.get(DisplayKeys.PROCESSING_FILE_DATE), line);
