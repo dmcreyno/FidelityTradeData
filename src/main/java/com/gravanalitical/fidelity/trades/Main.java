@@ -119,6 +119,7 @@ public class Main {
             sortedInputList = new TreeSet<>(Comparator.comparing(File::getName));
 
             sortedInputList.addAll(inputList);
+            this.fileCounter = 0;
 
             sortedInputList.forEach( aFile -> {
                 String currentFileName = aFile.getName();
