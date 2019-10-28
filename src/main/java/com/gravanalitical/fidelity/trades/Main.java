@@ -119,7 +119,7 @@ public class Main {
             sortedInputList = new TreeSet<>(Comparator.comparing(File::getName));
 
             sortedInputList.addAll(inputList);
-            this.fileCounter = 0;
+            this.fileCounter = 0; // a file per day.
 
             sortedInputList.forEach( aFile -> {
                 String currentFileName = aFile.getName();
@@ -137,7 +137,8 @@ public class Main {
 
                 if(!aDay.isEmpty()) {
                     updateMonthlyValues(aDay);
-                    aDay.setDayOrdinal(this.incrementFileCount());
+                    this.fileCounter++;
+                    aDay.setDayOrdinal(this.fileCounter);
                     TradeDayPresentation formatter = TradeDayFormatFactory.getCsvFormatter();
                     String logMessage = formatter.formatTradeDay(aDay);
                     summaryPrintWriter.println(TradeDayFormatFactory.getTabularFormatter().formatTradeDay(aDay));
@@ -171,8 +172,5 @@ public class Main {
         this.monthly.addTotalUnknownDollars(pADay.getUnknownDollarVolume());
     }
 
-    private int incrementFileCount() {
-        return ++fileCounter;
-    }
 
 }
