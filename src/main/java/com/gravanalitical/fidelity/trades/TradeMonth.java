@@ -8,7 +8,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
- *
+ * Holds the days of trading. There really is no concept of a month in the application. It processes
+ * all the CSV files found in the directory. It is assumed the user will be analyzing a month at a time.
+ * However, there is no limit. The user may store more than one month of data in the directory and the
+ * system will process it.
  */
 public class TradeMonth {
     private BigDecimal totalVolume = BigDecimal.ZERO;

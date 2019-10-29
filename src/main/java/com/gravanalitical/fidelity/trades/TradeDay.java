@@ -49,16 +49,12 @@ public class TradeDay {
     private int dayOrdinal;
 
     /**
-     * Date string. Currently provided as third line of csv file header.
-     */
-
-    /**
      *
      */
     private ArrayList<TradeRecord> tradeList = new ArrayList<>();
 
     /**
-     *
+     * The daily file this class represents.
      */
     private File aFile;
 
@@ -69,6 +65,11 @@ public class TradeDay {
      */
     private List<TradePriceBucket> tradePriceBuckets;
 
+    /**
+     * The properties file used to control aspects of the ticker being analyzed. Multiple tickers are
+     * processed and each can be configured to have different properties, rounding, precision, etc. The TradeDay
+     * needs this information to control maths.
+     */
     private GA_FidelityTradesConfig config;
 
     /**

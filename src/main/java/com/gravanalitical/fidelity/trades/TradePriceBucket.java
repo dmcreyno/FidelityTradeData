@@ -34,7 +34,9 @@ import java.math.BigInteger;
  *     anything else, where the money is going.</li>
  * </ul>
  */
+@Deprecated
 public class TradePriceBucket {
+    // This class seems to be of limit use.
     private static final Logger log = LogManager.getLogger("fidelity.trades.TradePriceBucket");
     private String name;
     private BigDecimal min;
