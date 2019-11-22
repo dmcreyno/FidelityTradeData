@@ -57,6 +57,7 @@ public class GA_FidelityTradesConfig {
         static final String BUCKET_MAXS                   = "com.ga.fidelity.trades.bucket.maxs";  //=0.00020,0.000299
         static final String BUCKET_LOGIC                  = "com.ga.fidelity.trades.bucket.logx";  //=INCLUSIVE,INCLUSIVE
         static final String BIG_NUMBER_SCALE              = "com.ga.fidelity.trades.scale";
+        static final String INCLUDE_TRADES                = "com.ga.fidelity.trades.include";
     }
 
     /**
@@ -81,6 +82,8 @@ public class GA_FidelityTradesConfig {
     private static String baseDir;
     private static String fileSeparator;
     private static Configuration config;
+
+    private static GA_FidelityTradesConfig _instance;
 
     /**
      *
@@ -115,9 +118,14 @@ public class GA_FidelityTradesConfig {
     }
 
     public static GA_FidelityTradesConfig init(String pathName) {
-        return new GA_FidelityTradesConfig(pathName);
+        _instance = new GA_FidelityTradesConfig(pathName);
+        return _instance;
     }
 
+
+    public static GA_FidelityTradesConfig getInstance() {
+        return _instance;
+    }
 
     public String getHomeDir() {
         return baseDir;
@@ -146,6 +154,10 @@ public class GA_FidelityTradesConfig {
 
     public String getInputDir() {
         return baseDir+fileSeparator+"input";
+    }
+
+    public boolean includeTrades() {
+        return config.getBoolean(PropertyConstants.INCLUDE_TRADES, false);
     }
 
     /**

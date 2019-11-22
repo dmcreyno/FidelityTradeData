@@ -19,6 +19,7 @@ package com.gravanalitical.fidelity.trades.format;
 
 import com.gravanalitical.fidelity.trades.TradeDay;
 import com.gravanalitical.fidelity.trades.TradeRecord;
+import com.gravanalitical.fidelity.trades.config.GA_FidelityTradesConfig;
 import com.gravanalitical.locale.DisplayKeys;
 
 import java.text.DecimalFormat;
@@ -61,6 +62,7 @@ public class TradeDayAsTabular implements TradeDayPresentation {
                         DisplayKeys.get(DisplayKeys.SUMMARY_BUY_DOLLAR_VOL_PCT, percentageFormatter.format(aTradeDay.getPctBuyDolVol())) + "\n" +
                         DisplayKeys.get(DisplayKeys.SUMMARY_SELL_DOLLAR_VOL_PCT, percentageFormatter.format(aTradeDay.getPctSellDolVol())) + "\n" +
                         DisplayKeys.get(DisplayKeys.SUMMARY_OTHER_DOLLAR_VAL_PCT, percentageFormatter.format(aTradeDay.getPctUnknownDolVol())) ;
+
 
         // Now append the trades for the day.
         ArrayList trades = aTradeDay.getTradeList();
