@@ -40,14 +40,18 @@ import java.util.TreeSet;
  *
  * Program to read a collection of Fidelity trades exported from ActiveTraderPro as CSV files.
  * Uses a "base" directory structure to hold the input files. The directory referenced
- * by -Dom.ga.fidelity.trades.home is assumed to hold an input folder named, "input" containing CSV
- * files named with the date of the day the trades were executed.
+ * by -Dom.ga.fidelity.trades.home is assumed to have a collection of ticker directories each of
+ * which has an input folder named, "input" containing CSV files named with the
+ * date of the day the trades were executed.
+ *
  * Reads the "fidelity.properties file referenced on the command line
  * using the -D option where the base directory is defined. It is assumed the directory will have
  * a sub-folder named <i>input</i> when the CSV files downloaded from Fidelity will be found.
+ *
  * The code will pick up any file with a "csv" extension.
  * <b>Example</b><br>
  * -Dcom.ga.fidelity.trades.home=/users/mary/trade_data/MSFT
+ *
  * The system uses the fidelity.properties file, also located in the base dire, to contain the ticker
  * symbol which will be used to generate the output file name CSV file.
  */

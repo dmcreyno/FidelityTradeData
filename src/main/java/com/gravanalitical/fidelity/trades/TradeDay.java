@@ -296,27 +296,51 @@ public class TradeDay {
     }
 
     public BigDecimal getPctBuyVol() {
-        return getBuyVolume().divide(getVolume(),5,RoundingMode.HALF_UP);
+        try {
+            return getBuyVolume().divide(getVolume(),5,RoundingMode.HALF_UP);
+        } catch(ArithmeticException ae) { }
+
+        return BigDecimal.ZERO;
     }
 
     public BigDecimal getPctSellVol() {
-        return getSellVolume().divide(getVolume(),5,RoundingMode.HALF_UP);
+        try {
+            return getSellVolume().divide(getVolume(),5,RoundingMode.HALF_UP);
+        } catch(ArithmeticException ae) { }
+
+        return BigDecimal.ZERO;
     }
 
     public BigDecimal getPctUnknownVol() {
-        return getUnknownVolume().divide(getVolume(),5,RoundingMode.HALF_UP);
+        try {
+            return getUnknownVolume().divide(getVolume(),5,RoundingMode.HALF_UP);
+        } catch(ArithmeticException ae) { }
+
+        return BigDecimal.ZERO;
     }
 
     public BigDecimal getPctBuyDolVol() {
-        return getBuyDollarVolume().divide(getDollarVolume(),5,RoundingMode.HALF_UP);
+        try {
+            return getBuyDollarVolume().divide(getDollarVolume(), 5, RoundingMode.HALF_UP);
+        } catch(ArithmeticException ae) { }
+
+        return BigDecimal.ZERO;
     }
 
     public BigDecimal getPctSellDolVol() {
-        return getSellDollarVolume().divide(getDollarVolume(),5,RoundingMode.HALF_UP);
+        try {
+            return getSellDollarVolume().divide(getDollarVolume(),5,RoundingMode.HALF_UP);
+        } catch(ArithmeticException ae) { }
+
+        return BigDecimal.ZERO;
     }
 
     public BigDecimal getPctUnknownDolVol() {
-        return getUnknownDollarVolume().divide(getDollarVolume(),5,RoundingMode.HALF_UP);
+        try {
+            return getUnknownDollarVolume().divide(getDollarVolume(),5,RoundingMode.HALF_UP);
+        } catch(ArithmeticException ae) { }
+
+        return BigDecimal.ZERO;
     }
 
     public void writeSummary(PrintWriter psw, TradeDayPresentation formatter) {
@@ -369,5 +393,31 @@ public class TradeDay {
                 log.error(DisplayKeys.get(DisplayKeys.ERROR_FILE_CLOSE),file.getAbsolutePath(), e);
             }
         }
+    }
+
+    public String getDebugString() {
+        String delimiter = "|";
+        StringBuilder buf = new StringBuilder(this.getDayOrdinal() + delimiter +
+                this.getDateStr() + delimiter +
+                this.getVolume() + delimiter +
+                this.getBuyVolume() + delimiter +
+                this.getSellVolume() + delimiter +
+                this.getUnknownVolume() + delimiter +
+                this.getDollarVolume() + delimiter +
+                this.getBuyDollarVolume() + delimiter +
+                this.getSellDollarVolume() + delimiter +
+                this.getUnknownDollarVolume());
+
+        buf.append("TradeDay[Date=").append(getDateStr()).append(", ");
+        buf.append("Volume=").append(getVolume()).append(", ");
+        buf.append("BuyVolume=").append(getBuyVolume()).append(", ");
+        buf.append("SellVolume=").append(getSellVolume()).append(", ");
+        buf.append("UnknownVolume=").append(getUnknownVolume()).append(", ");
+        buf.append("DollarVolume=").append(getDollarVolume()).append(", ");
+        buf.append("BuyDollarVolume=").append(getBuyDollarVolume()).append(", ");
+        buf.append("SellDollarVolume=").append(getSellDollarVolume()).append(", ");
+        buf.append("UnknownDollarVolume=").append(getUnknownDollarVolume()).append("]");
+
+        return buf.toString();
     }
 }

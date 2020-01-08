@@ -102,6 +102,11 @@ public class TradeRecord implements Comparable {
         if(bid.equals(BigDecimal.ZERO) && ask.equals(BigDecimal.ZERO)) {
             return BuySell.UNKOWN;
         }
+
+        if(bid.equals(ask)) {
+            return BuySell.UNKOWN;
+        }
+
         if(price.compareTo(bid) <= 0) {
             return BuySell.SELL;
         } else if(price.compareTo(ask) >= 0) {
