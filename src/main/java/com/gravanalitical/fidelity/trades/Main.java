@@ -77,6 +77,7 @@ public class Main {
             } else {
                 Arrays.stream(files).filter(File::isDirectory).forEach(file -> {
                     String baseDirName = file.getAbsolutePath();
+                    GA_FidelityTradesConfig.init(baseDirName);
                     ThreadContext.put("ticker", file.getName());
                     log.info(DisplayKeys.get(DisplayKeys.PROCESSING_FILE), baseDirName);
                     app.processDirectory(baseDirName);

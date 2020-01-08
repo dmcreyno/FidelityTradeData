@@ -190,7 +190,10 @@ public class TradeRecord implements Comparable {
     @Override
     public String toString() {
         return timeStr + "," +
-                getPrice() + "," +
+                sentiment() + "," +
+                price + "," +
+                bid + "," +
+                ask + "," +
                 getDollarVolume();
     }
 }
