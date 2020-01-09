@@ -59,10 +59,22 @@ public class Main {
     private static final Logger log = LogManager.getLogger("fidelity.trades.Main");
     private int fileCounter = 0;
     private TradeMonth monthly;
+    private static boolean HAS_ARGS = false;
+    private static TreeSet<String> TICKER_ARGS = new TreeSet();
 
     @SuppressWarnings({"unused"})
     public Main(String[] args) {
-
+        if(log.isInfoEnabled()) {
+            for (String arg: args) {
+                log.info("Main(String[]) - arg: {}", arg);
+            }
+        }
+        HAS_ARGS = args.length > 0;
+        if(HAS_ARGS) {
+            for(String arg:args) {
+                TICKER_ARGS.add(arg);
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -76,17 +88,20 @@ public class Main {
                 log.error("No directories to process.");
             } else {
                 Arrays.stream(files).filter(File::isDirectory).forEach(file -> {
-                    String baseDirName = file.getAbsolutePath();
-                    GA_FidelityTradesConfig.init(baseDirName);
-                    ThreadContext.put("ticker", file.getName());
-                    log.info(DisplayKeys.get(DisplayKeys.PROCESSING_FILE), baseDirName);
-                    app.processDirectory(baseDirName);
-                    ThreadContext.pop();
+                    if(HAS_ARGS && !TICKER_ARGS.contains(file.getName())) {
+                        log.debug(" main(String[]) skipping {}", file);
+                    } else {
+                        String baseDirName = file.getAbsolutePath();
+                        GA_FidelityTradesConfig.init(baseDirName);
+                        ThreadContext.put("ticker", file.getName());
+                        log.info(DisplayKeys.get(DisplayKeys.PROCESSING_FILE), baseDirName);
+                        app.processDirectory(baseDirName);
+                        ThreadContext.pop();
+                    }
                 });
             }
         } catch(Exception ex) {
             log.error(DisplayKeys.get(DisplayKeys.ERROR), ex);
-            ex.printStackTrace();
         }
 
     }

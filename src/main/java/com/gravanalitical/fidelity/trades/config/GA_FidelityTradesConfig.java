@@ -92,12 +92,12 @@ public class GA_FidelityTradesConfig {
     private GA_FidelityTradesConfig(String pBaseDir) {
         baseDir = pBaseDir;
         fileSeparator = System.getProperty("file.separator");
-        log.info("BASE_DIR: " + baseDir);
+        log.info("GA_FidelityTradesConfig(String) BASE_DIR: " + baseDir);
         if(null == baseDir) {
-            throw new Error("based directory is null. Did you set the command line property, \"-D" + PropertyConstants.HOME_KEY + "?\"");
+            throw new Error("GA_FidelityTradesConfig(String) based directory is null. Did you set the command line property, \"-D" + PropertyConstants.HOME_KEY + "?\"");
         }
         if(log.isDebugEnabled()) {
-            log.debug("FILE SEP: " + fileSeparator);
+            log.debug("GA_FidelityTradesConfig(String) FILE SEP: " + fileSeparator);
         }
 
         Parameters params = new Parameters();
@@ -110,7 +110,7 @@ public class GA_FidelityTradesConfig {
         try {
             config = builder.getConfiguration();
         } catch(ConfigurationException cex) {
-            log.error("configuration failed.",cex);
+            log.error("GA_FidelityTradesConfig(String) configuration failed.",cex);
             System.exit(-1);
         } finally {
 
@@ -118,6 +118,7 @@ public class GA_FidelityTradesConfig {
     }
 
     public static GA_FidelityTradesConfig init(String pathName) {
+        log.info("init(String) pathName - {}",pathName);
         _instance = new GA_FidelityTradesConfig(pathName);
         return _instance;
     }
