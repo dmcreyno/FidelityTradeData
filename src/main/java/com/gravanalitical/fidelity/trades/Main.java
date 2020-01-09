@@ -48,12 +48,18 @@ import java.util.TreeSet;
  * using the -D option where the base directory is defined. It is assumed the directory will have
  * a sub-folder named <i>input</i> when the CSV files downloaded from Fidelity will be found.
  *
- * The code will pick up any file with a "csv" extension.
+ * The code will travers all subdirectories and pick up any file with a "csv" extension inside an "input" directory.
  * <b>Example</b><br>
- * -Dcom.ga.fidelity.trades.home=/users/mary/trade_data/MSFT
+ * -Dcom.ga.fidelity.trades.home=/users/mary/trade_data
  *
- * The system uses the fidelity.properties file, also located in the base dire, to contain the ticker
- * symbol which will be used to generate the output file name CSV file.
+ * The code will process only the passed subdirectories and pick up any file with a "csv" extension inside an "input"
+ * directory.
+ * <b>Example</b><br>
+ * -Dcom.ga.fidelity.trades.home=/users/mary/trade_data GWRE
+ *
+ * The system uses the fidelity.properties file, also located in the base/[ticker] dir, to contain the ticker
+ * symbol which will be used to generate the output file name CSV file. This way, the user may keep their own
+ * directory naming structure - the program will not use the directory name as the ticker name.
  */
 public class Main {
     private static final Logger log = LogManager.getLogger("fidelity.trades.Main");
