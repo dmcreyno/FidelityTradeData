@@ -47,7 +47,8 @@ public class GA_FidelityTradesConfig {
     private ResourceBundle displayKeys = ResourceBundle.getBundle("DisplayKeys", locale);
 
     public static class PropertyConstants {
-        public static final String HOME_KEY                      = "com.ga.fidelity.trades.home";
+        public static final String HOME_KEY               = "com.ga.fidelity.trades.home";
+        public static final String RUNNING_AVERAGE        = "com.ga.fidelity.running.vwda";
         static final String OUTPUT_HEADER_LINE_01         = "com.ga.fidelity.trades.output.header1";
         static final String HEADER_SKIP_LINE_COUNT        = "com.ga.fidelity.trades.skip.header";
         static final String TICKER                        = "com.ga.fidelity.trades.ticker";
@@ -161,6 +162,10 @@ public class GA_FidelityTradesConfig {
         return config.getBoolean(PropertyConstants.INCLUDE_TRADES, false);
     }
 
+    public boolean includeRunningAverage() {
+        return config.getBoolean(PropertyConstants.RUNNING_AVERAGE, false);
+    }
+    
     /**
      * The header is configured in the properties file.
      * @return

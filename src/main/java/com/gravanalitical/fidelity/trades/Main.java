@@ -168,7 +168,6 @@ public class Main {
                     TradeDayPresentation formatter = TradeDayFormatFactory.getCsvFormatter();
                     String logMessage = formatter.formatTradeDay(aDay);
                     summaryPrintWriter.println(TradeDayFormatFactory.getTabularFormatter().formatTradeDay(aDay));
-                    //log.info(GA_FidelityTradesConfig.PRINT_MARKER,"{}", TradeDayFormatFactory.getTabularFormatter().formatTradeDay(aDay));
                     log.info("{}", logMessage);
                     try {
                         aDay.writeSummary(pw, formatter);
