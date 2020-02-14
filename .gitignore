@@ -20,6 +20,6 @@ hs_err_pid*
 *.iml
 .idea
 
-target
-classes
-StockAnalysis
+**/target
+**/classes
+**/StockAnalysis
