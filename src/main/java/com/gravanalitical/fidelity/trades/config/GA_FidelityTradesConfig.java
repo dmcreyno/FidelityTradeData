@@ -155,7 +155,7 @@ public class GA_FidelityTradesConfig {
     }
 
     public String getInputDir() {
-        return baseDir+fileSeparator+"input";
+        return baseDir+fileSeparator+getTicker()+fileSeparator+"input";
     }
 
     public boolean includeTrades() {

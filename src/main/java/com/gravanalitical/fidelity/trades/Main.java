@@ -93,15 +93,16 @@ public class Main {
             if(null == files) {
                 log.error("No directories to process.");
             } else {
+                GA_FidelityTradesConfig.init(baseDir);
                 Arrays.stream(files).filter(File::isDirectory).forEach(file -> {
                     if(HAS_ARGS && !TICKER_ARGS.contains(file.getName())) {
                         log.debug(" main(String[]) skipping {}", file);
                     } else {
                         String baseDirName = file.getAbsolutePath();
-                        GA_FidelityTradesConfig.init(baseDirName);
-                        ThreadContext.put("ticker", file.getName());
+                        String tickerSymbol = file.getName();
+                        ThreadContext.put("ticker", tickerSymbol);
                         log.info(DisplayKeys.get(DisplayKeys.PROCESSING_FILE), baseDirName);
-                        app.processDirectory(baseDirName);
+                        app.processDirectory(baseDirName, tickerSymbol);
                         ThreadContext.pop();
                     }
                 });
@@ -113,23 +114,28 @@ public class Main {
     }
 
     /**
+     *
      * Traverses all directories and processes the inputs for each. Each directory is a ticker symbol
      * and the program expects to find a "fidelity.properties" within each.
+     *
+     * @param baseDireName
+     * @param tickerSymbol
      */
-    private void processDirectory(String baseDireName) {
-        GA_FidelityTradesConfig config = GA_FidelityTradesConfig.init(baseDireName);
+    private void processDirectory(String baseDireName, String tickerSymbol) {
+        GA_FidelityTradesConfig config = GA_FidelityTradesConfig.getInstance();
         monthly = new TradeMonth(config);
         String OUT_HEADER = config.getOutputHeader();
         String outStr = config.getHomeDir();
-        String ticker = config.getTicker();
+        String ticker = tickerSymbol;
         File outfile;
         String inDirStr;
         Collection<File> inputList;
         TreeSet<File> sortedInputList;
+        String fileSeparator = System.getProperty("file.separator");
 
         TradeMonthAsTabular monthFormatter = new TradeMonthAsTabular();
 
-        outfile = new File(outStr+System.getProperty("file.separator") + ticker + "." + GA_FidelityTradesConfig.CSV_FILE_EXTENSION);
+        outfile = new File(outStr + fileSeparator + ticker + fileSeparator + ticker + "." + GA_FidelityTradesConfig.CSV_FILE_EXTENSION);
         log.debug(DisplayKeys.get(DisplayKeys.PROCESSING_OUTPUT_FILE), outfile.getAbsolutePath());
 
         try (   FileWriter outFileWriter = new FileWriter(outfile);
@@ -167,14 +173,18 @@ public class Main {
                     aDay.setDayOrdinal(this.fileCounter);
                     TradeDayPresentation formatter = TradeDayFormatFactory.getCsvFormatter();
                     String logMessage = formatter.formatTradeDay(aDay);
-                    summaryPrintWriter.println(TradeDayFormatFactory.getTabularFormatter().formatTradeDay(aDay));
-                    log.info("{}", logMessage);
-                    try {
-                        aDay.writeSummary(pw, formatter);
-                        pw.flush();
-                    } catch (Exception e) {
-                        log.error(DisplayKeys.get(DisplayKeys.ERROR), e);
-                        System.exit(-1);
+                    if(true) {
+                        summaryPrintWriter.println(TradeDayFormatFactory.getTabularFormatter().formatTradeDay(aDay));
+                        log.info("{}", logMessage);
+                    }
+                    if(true) {
+                        try {
+                            aDay.writeSummary(pw, formatter);
+                            pw.flush();
+                        } catch (Exception e) {
+                            log.error(DisplayKeys.get(DisplayKeys.ERROR), e);
+                            System.exit(-1);
+                        }
                     }
                 }
             });

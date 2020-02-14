@@ -25,7 +25,6 @@ import com.gravanalitical.locale.DisplayKeys;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.TreeSet;
 import java.util.function.Consumer;
 
@@ -64,18 +63,20 @@ public class TradeDayAsTabular implements TradeDayPresentation {
                         DisplayKeys.get(DisplayKeys.SUMMARY_OTHER_DOLLAR_VAL_PCT, percentageFormatter.format(aTradeDay.getPctUnknownDolVol())) ;
 
 
-        // Now append the trades for the day.
-        ArrayList trades = aTradeDay.getTradeList();
-        TreeSet sortedTrades = new TreeSet(trades);
-        StringBuilder buf = new StringBuilder(rVal);
-        sortedTrades.forEach(new Consumer<TradeRecord>() {
-            @Override
-            public void accept(TradeRecord aRecord) {
-                buf.append("\n").append(aRecord.toString());
-            }
-        });
+        if(GA_FidelityTradesConfig.getInstance().includeTrades()) {
+            // Now append the trades for the day.
+            ArrayList trades = aTradeDay.getTradeList();
+            TreeSet sortedTrades = new TreeSet(trades);
+            StringBuilder buf = new StringBuilder(rVal);
+            sortedTrades.forEach(new Consumer<TradeRecord>() {
+                @Override
+                public void accept(TradeRecord aRecord) {
+                    buf.append("\n").append(aRecord.toString());
+                }
+            });
 
-        rVal = buf.toString();
+            rVal = buf.toString();
+        }
         return rVal;
     }
 

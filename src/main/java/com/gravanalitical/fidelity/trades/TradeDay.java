@@ -111,7 +111,7 @@ public class TradeDay {
                         TradeRecord tr = TradeRecord.parse(currentLine);
                         if (log.isDebugEnabled()) log.debug("adding a trade . . . {}", tr);
                         this.tradeList.add(tr);
-                        distributeToBucket(tr);
+//                        distributeToBucket(tr);
                     } catch (Exception e) {
                         log.error("error processing line {} in file {}", lineCounter,aFile.getName());
                         log.error("error processing data, \"{}\"", currentLine, e);
@@ -343,6 +343,11 @@ public class TradeDay {
         return BigDecimal.ZERO;
     }
 
+    /**
+     * Looks like this prints the trade records for the day.
+     * @param psw
+     * @param formatter
+     */
     public void writeSummary(PrintWriter psw, TradeDayPresentation formatter) {
         psw.println(formatter.formatTradeDay(this));
     }
