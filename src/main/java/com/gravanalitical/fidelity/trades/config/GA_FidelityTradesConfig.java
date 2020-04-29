@@ -17,7 +17,6 @@
 
 package com.gravanalitical.fidelity.trades.config;
 
-import com.gravanalitical.fidelity.trades.TradePriceBucket;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.FileBasedConfiguration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
@@ -30,8 +29,6 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -51,7 +48,6 @@ public class GA_FidelityTradesConfig {
         public static final String RUNNING_AVERAGE        = "com.ga.fidelity.running.vwda";
         static final String OUTPUT_HEADER_LINE_01         = "com.ga.fidelity.trades.output.header1";
         static final String HEADER_SKIP_LINE_COUNT        = "com.ga.fidelity.trades.skip.header";
-        static final String TICKER                        = "com.ga.fidelity.trades.ticker";
         static final String DATE_LINE_NUM                 = "com.ga.fidelity.trades.date.line.number"; // Date Line number in the Fidelity CSV export
         static final String BUCKET_NAMES                  = "com.ga.fidelity.trades.bucket.names"; //=0001,0002
         static final String BUCKET_MINS                   = "com.ga.fidelity.trades.bucket.mins";  //=0.00001,0.00019
@@ -150,14 +146,6 @@ public class GA_FidelityTradesConfig {
         return config.getInt(PropertyConstants.BIG_NUMBER_SCALE, 8);
     }
 
-    public String getTicker() {
-        return config.getString(PropertyConstants.TICKER);
-    }
-
-    public String getInputDir() {
-        return baseDir+fileSeparator+getTicker()+fileSeparator+"input";
-    }
-
     public boolean includeTrades() {
         return config.getBoolean(PropertyConstants.INCLUDE_TRADES, false);
     }
@@ -182,47 +170,7 @@ public class GA_FidelityTradesConfig {
                 buffer.append(",");
             }
         }
-        // append the bucket list
-        buffer.append(getBucketListHeader());
         return  buffer.toString();
-    }
-
-
-    /**
-     * Users can specify how they want trade data partitioned by price ranges. A price range is called
-     * a TradeBucket. This function reads the config and creates the list of buckets.
-     *
-     * Buckets are not required. Deleting the bucket names from the config will cause this function
-     * to return an empty list.
-     * @return
-     */
-    public List<TradePriceBucket> getBuckets() {
-        List<TradePriceBucket> tradePriceBucketList = new ArrayList<>();
-        List bucketNames = config.getList(PropertyConstants.BUCKET_NAMES);
-        List bucketMaxs = config.getList(PropertyConstants.BUCKET_MAXS);
-        List bucketMins = config.getList(PropertyConstants.BUCKET_MINS);
-        List bucketLogxes = config.getList(PropertyConstants.BUCKET_LOGIC);
-        int bucketListSize = bucketNames.size();
-        for(int i = 0; i < bucketListSize; i++) {
-            // TradePriceBucket(String name, BigDecimal min, BigDecimal max, COMPARISON_LOGIC compLogic)
-            String bucketName = (String) bucketNames.get(i);
-            BigDecimal bucketMin = new BigDecimal((String)bucketMins.get(i));
-            BigDecimal bucketMax = new BigDecimal((String)bucketMaxs.get(i));
-            TradePriceBucket.COMPARISON_LOGIC bucketLogx = TradePriceBucket.COMPARISON_LOGIC.valueOf((String)bucketLogxes.get(i));
-            TradePriceBucket aTradePriceBucket = new TradePriceBucket(bucketName,bucketMin,bucketMax,bucketLogx);
-            log.debug("TradePriceBucket: {}", aTradePriceBucket);
-            tradePriceBucketList.add(aTradePriceBucket);
-        }
-
-        return tradePriceBucketList;
-    }
-
-    private String getBucketListHeader() {
-        StringBuilder buffer = new StringBuilder();
-        getBuckets().forEach(aTradePriceBucket -> {
-            buffer.append(",\"").append(aTradePriceBucket.getName()).append("\"");
-        });
-        return buffer.toString();
     }
 
 }

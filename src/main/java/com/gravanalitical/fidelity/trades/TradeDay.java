@@ -28,7 +28,6 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Reads the data for one day of trading and stores the stats. Keeps the trades
@@ -59,13 +58,6 @@ public class TradeDay {
     private File aFile;
 
     /**
-     * Collection of price range tradePriceBuckets to count trades
-     * that execute between the min and max defined for
-     * the bucket.
-     */
-    private List<TradePriceBucket> tradePriceBuckets;
-
-    /**
      * The properties file used to control aspects of the ticker being analyzed. Multiple tickers are
      * processed and each can be configured to have different properties, rounding, precision, etc. The TradeDay
      * needs this information to control maths.
@@ -78,7 +70,6 @@ public class TradeDay {
     public TradeDay(File pFile, GA_FidelityTradesConfig pConfig) {
         config = pConfig;
         aFile = pFile;
-        tradePriceBuckets = config.getBuckets();
     }
 
     /**
@@ -126,18 +117,6 @@ public class TradeDay {
         }
     }
 
-    /**
-     * Put the trade in a bucket.
-     */
-
-    private void distributeToBucket(TradeRecord tradeRecord) {
-        tradePriceBuckets.forEach(aTradePriceBucket -> {
-            log.debug("Asking trade bucket, {}, to accept trade price, {}.", aTradePriceBucket.getName(),tradeRecord.getPrice());
-            if(aTradePriceBucket.acceptsTrade(tradeRecord)) {
-                log.debug("Trade price {} was accepted by bucket, {}.",tradeRecord.getPrice(), aTradePriceBucket.getName());
-            }
-        });
-    }
 
     public String getDateStr() {
         return dateStr;
@@ -145,10 +124,6 @@ public class TradeDay {
 
     public ArrayList<TradeRecord> getTradeList() {
         return tradeList;
-    }
-
-    public List<TradePriceBucket> getTradePriceBuckets() {
-        return tradePriceBuckets;
     }
 
 

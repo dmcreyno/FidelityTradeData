@@ -87,6 +87,7 @@ public class Main {
         log.info(DisplayKeys.get(DisplayKeys.STARTUP));
         Main app = new Main(args);
         try {
+            // The home directory has folders for each ticker symbol to be analyzed.
             String baseDir = System.getProperty(GA_FidelityTradesConfig.PropertyConstants.HOME_KEY);
             File dir = FileUtils.getFile(baseDir);
             File[] files = dir.listFiles();
@@ -115,8 +116,7 @@ public class Main {
 
     /**
      *
-     * Traverses all directories and processes the inputs for each. Each directory is a ticker symbol
-     * and the program expects to find a "fidelity.properties" within each.
+     * Traverses all directories and processes the inputs for each. Each directory is a ticker symbol.
      *
      * @param baseDireName
      * @param tickerSymbol
@@ -146,7 +146,7 @@ public class Main {
 
             pw.println(OUT_HEADER);
 
-            inDirStr = config.getInputDir();
+            inDirStr = config.getHomeDir() + "/" + ticker + "/input"; // The input dir will be the HOME dir.
             inputList = FileUtils.listFiles(new File(inDirStr),GA_FidelityTradesConfig.FILE_EXT_FOR_PROCESSING,false);
             sortedInputList = new TreeSet<>(Comparator.comparing(File::getName));
 

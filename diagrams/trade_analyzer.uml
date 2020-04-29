@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="506.76089181286545" y="316.0">com.gravanalitical.fidelity.trades.format.TradeMonthAsTabular</node>
+    <node x="259.6108918128655" y="158.0">com.gravanalitical.fidelity.trades.format.TradeDayAsCSVString</node>
+    <node x="133.93808479532163" y="405.0">com.gravanalitical.fidelity.trades.format.TradeDayPresentation</node>
+    <node x="388.6108918128655" y="0.0">com.gravanalitical.locale.DisplayKeys</node>
+    <node x="270.6108918128655" y="237.0">com.gravanalitical.fidelity.trades.format.TradeDayFormatFactory</node>
+    <node x="29.633333333333326" y="316.0">com.gravanalitical.fidelity.trades.TradeDay</node>
+    <node x="467.6047514619883" y="514.0">com.gravanalitical.fidelity.trades.Main</node>
+    <node x="72.61089181286548" y="158.0">com.gravanalitical.fidelity.trades.format.TradeDayAsTabular</node>
+    <node x="535.8565789473685" y="405.0">com.gravanalitical.fidelity.trades.TradeMonth</node>
+    <node x="0.0" y="79.0">com.gravanalitical.fidelity.trades.TradeRecord</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.gravanalitical.fidelity.trades.Main" target="com.gravanalitical.fidelity.trades.TradeMonth">
+      <point x="8.444444444444457" y="-14.5" />
+      <point x="514.0491959064327" y="464.0" />
+      <point x="565.3565789473685" y="464.0" />
+      <point x="-29.5" y="14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.TradeMonth" target="com.gravanalitical.fidelity.trades.format.TradeMonthAsTabular">
+      <point x="-29.5" y="-14.5" />
+      <point x="565.3565789473685" y="385.0" />
+      <point x="574.6358918128655" y="385.0" />
+      <point x="-22.625" y="14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.format.TradeMonthAsTabular" target="com.gravanalitical.fidelity.trades.TradeMonth">
+      <point x="22.625" y="14.5" />
+      <point x="619.8858918128655" y="385.0" />
+      <point x="624.3565789473685" y="385.0" />
+      <point x="29.5" y="-14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.format.TradeDayAsTabular" target="com.gravanalitical.fidelity.trades.format.TradeDayPresentation">
+      <point x="0.0" y="14.5" />
+      <point x="156.11089181286548" y="207.0" />
+      <point x="184.71739766081865" y="207.0" />
+      <point x="184.71739766081865" y="365.0" />
+      <point x="227.93808479532163" y="365.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.TradeDay" target="com.gravanalitical.fidelity.trades.TradeRecord">
+      <point x="-20.799999999999955" y="-14.5" />
+      <point x="60.83333333333337" y="296.0" />
+      <point x="48.06089181286552" y="296.0" />
+      <point x="48.06089181286552" y="133.0" />
+      <point x="62.5" y="133.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.Main" target="com.gravanalitical.fidelity.trades.format.TradeMonthAsTabular">
+      <point x="0.0" y="-14.5" />
+      <point x="505.6047514619883" y="454.0" />
+      <point x="512.7956140350877" y="454.0" />
+      <point x="512.7956140350877" y="385.0" />
+      <point x="529.3858918128655" y="385.0" />
+      <point x="-67.875" y="14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.format.TradeDayAsCSVString" target="com.gravanalitical.fidelity.trades.format.TradeDayPresentation">
+      <point x="60.33333333333337" y="14.5" />
+      <point x="410.44422514619885" y="207.0" />
+      <point x="476.1108918128655" y="207.0" />
+      <point x="476.1108918128655" y="385.0" />
+      <point x="303.1380847953216" y="385.0" />
+      <point x="75.19999999999999" y="-14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.format.TradeDayFormatFactory" target="com.gravanalitical.fidelity.trades.format.TradeDayAsCSVString">
+      <point x="0.0" y="-14.5" />
+      <point x="368.1108918128655" y="217.0" />
+      <point x="350.1108918128655" y="217.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.format.TradeDayFormatFactory" target="com.gravanalitical.fidelity.trades.format.TradeDayAsTabular">
+      <point x="-65.0" y="-14.5" />
+      <point x="303.1108918128655" y="207.0" />
+      <point x="211.77755847953213" y="207.0" />
+      <point x="55.66666666666666" y="14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.format.TradeDayFormatFactory" target="com.gravanalitical.locale.DisplayKeys">
+      <point x="65.0" y="-14.5" />
+      <point x="433.1108918128655" y="217.0" />
+      <point x="451.1108918128655" y="217.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.format.TradeDayAsCSVString" target="com.gravanalitical.fidelity.trades.TradeDay">
+      <point x="-60.333333333333314" y="14.5" />
+      <point x="289.7775584795321" y="217.0" />
+      <point x="130.14897660818716" y="217.0" />
+      <point x="130.14897660818716" y="286.0" />
+      <point x="102.4333333333334" y="286.0" />
+      <point x="20.800000000000068" y="-14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.format.TradeDayPresentation" target="com.gravanalitical.fidelity.trades.TradeDay">
+      <point x="-75.19999999999996" y="-14.5" />
+      <point x="152.73808479532167" y="385.0" />
+      <point x="94.63333333333333" y="385.0" />
+      <point x="13.000000000000028" y="14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.Main" target="com.gravanalitical.locale.DisplayKeys">
+      <point x="33.77777777777783" y="-14.5" />
+      <point x="539.3825292397662" y="494.0" />
+      <point x="698.2608918128655" y="494.0" />
+      <point x="698.2608918128655" y="49.0" />
+      <point x="501.1108918128655" y="49.0" />
+      <point x="50.0" y="14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.Main" target="com.gravanalitical.fidelity.trades.format.TradeDayPresentation">
+      <point x="-16.888888888888914" y="-14.5" />
+      <point x="488.7158625730994" y="474.0" />
+      <point x="227.93808479532163" y="474.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.format.TradeDayFormatFactory" target="com.gravanalitical.fidelity.trades.format.TradeDayPresentation">
+      <point x="0.0" y="14.5" />
+      <point x="368.1108918128655" y="375.0" />
+      <point x="265.53808479532165" y="375.0" />
+      <point x="37.60000000000002" y="-14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.Main" target="com.gravanalitical.fidelity.trades.TradeDay">
+      <point x="-25.33333333333337" y="-14.5" />
+      <point x="480.27141812865494" y="484.0" />
+      <point x="66.11089181286548" y="484.0" />
+      <point x="66.11089181286548" y="385.0" />
+      <point x="68.63333333333333" y="385.0" />
+      <point x="-13.0" y="14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.TradeDay" target="com.gravanalitical.fidelity.trades.format.TradeDayPresentation">
+      <point x="39.00000000000003" y="14.5" />
+      <point x="120.63333333333335" y="375.0" />
+      <point x="190.33808479532166" y="375.0" />
+      <point x="-37.599999999999966" y="-14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.format.TradeMonthAsTabular" target="com.gravanalitical.locale.DisplayKeys">
+      <point x="0.0" y="-14.5" />
+      <point x="597.2608918128655" y="59.0" />
+      <point x="476.1108918128655" y="59.0" />
+      <point x="25.0" y="14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.TradeRecord" target="com.gravanalitical.locale.DisplayKeys">
+      <point x="0.0" y="-14.5" />
+      <point x="62.5" y="49.0" />
+      <point x="401.1108918128655" y="49.0" />
+      <point x="-50.0" y="14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.format.TradeDayAsTabular" target="com.gravanalitical.fidelity.trades.TradeRecord">
+      <point x="-41.75" y="-14.5" />
+      <point x="114.36089181286548" y="133.0" />
+      <point x="104.16666666666663" y="133.0" />
+      <point x="41.66666666666666" y="14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.Main" target="com.gravanalitical.fidelity.trades.format.TradeDayFormatFactory">
+      <point x="-8.444444444444457" y="-14.5" />
+      <point x="496.26089181286545" y="296.0" />
+      <point x="433.1108918128655" y="296.0" />
+      <point x="65.0" y="14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.TradeDay" target="com.gravanalitical.fidelity.trades.format.TradeDayFormatFactory">
+      <point x="41.60000000000005" y="-14.5" />
+      <point x="123.23333333333338" y="296.0" />
+      <point x="303.1108918128655" y="296.0" />
+      <point x="-65.0" y="14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.format.TradeDayAsTabular" target="com.gravanalitical.fidelity.trades.TradeDay">
+      <point x="-55.66666666666663" y="14.5" />
+      <point x="100.44422514619885" y="217.0" />
+      <point x="74.2108918128655" y="217.0" />
+      <point x="74.2108918128655" y="296.0" />
+      <point x="81.63333333333333" y="296.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="com.gravanalitical.fidelity.trades.format.TradeDayAsTabular" target="com.gravanalitical.locale.DisplayKeys">
+      <point x="41.75" y="-14.5" />
+      <point x="197.86089181286548" y="59.0" />
+      <point x="426.1108918128655" y="59.0" />
+      <point x="-25.0" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="349.5" y="271.5" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
