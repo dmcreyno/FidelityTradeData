@@ -57,9 +57,6 @@ import java.util.TreeSet;
  * <b>Example</b><br>
  * -Dcom.ga.fidelity.trades.home=/users/mary/trade_data GWRE
  *
- * The system uses the fidelity.properties file, also located in the base/[ticker] dir, to contain the ticker
- * symbol which will be used to generate the output file name CSV file. This way, the user may keep their own
- * directory naming structure - the program will not use the directory name as the ticker name.
  */
 public class Main {
     private static final Logger log = LogManager.getLogger("fidelity.trades.Main");
@@ -206,6 +203,4 @@ public class Main {
         this.monthly.addTotalSellDollars(pADay.getSellDollarVolume());
         this.monthly.addTotalUnknownDollars(pADay.getUnknownDollarVolume());
     }
-
-
 }
